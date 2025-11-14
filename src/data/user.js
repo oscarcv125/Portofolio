@@ -13,9 +13,9 @@ const INFO = {
 	},
 
 	homepage: {
-		title: "Computer Science Engineer — Software Development, Algorithms, and Data Structures",
+		title: "Computer Science Engineer — Software Development",
 		description:
-			"I am a Computer Science Engineering student at Tecnológico de Monterrey with expertise in Python, C++, Swift/SwiftUI, and full-stack development. I specialize in iOS development, AI integration, data analysis, and building scalable applications. With a 97/100 GPA and Academic Excellence Scholarship, I'm passionate about solving complex problems and creating innovative solutions that make a real-world impact.",
+			"I am a Computer Science Engineering student at Tecnológico de Monterrey with expertise in Python, C++, Swift/SwiftUI, and full-stack development. I specialize in iOS development, AI integration, data analysis, and building scalable applications. With a 96/100 GPA and Academic Excellence Scholarship, I'm passionate about solving complex problems and creating innovative solutions that make a real-world impact.",
 	},
 
 	about: {
@@ -29,7 +29,7 @@ const INFO = {
 			id: "kaapeh",
 			title: "Kaapeh Mexico - Coffee Traceability App",
 			description:
-				"iOS mobile app for coffee traceability using Blockchain technology. Collaborated with a global team to implement blockchain-based tracking ensuring product quality and transparency. Built with SwiftUI, SwiftData, and Machine Learning for pattern detection and quality analysis.",
+				"iOS mobile app for coffee traceability using Blockchain technology. Collaborated with a global team to implement blockchain-based tracking ensuring product quality and transparency. Built with SwiftUI and SwiftData for efficient data management.",
 			logo: "https://cdn.jsdelivr.net/npm/programming-languages-logos/src/swift/swift.png",
 			linkText: "View Project",
 			link: "/project/kaapeh",

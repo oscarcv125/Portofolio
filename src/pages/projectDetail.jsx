@@ -42,97 +42,116 @@ const ProjectDetail = () => {
 			tech: ["Swift 5.9", "SwiftUI", "Gemini 1.5 Flash API", "Swift Charts", "MVVM Architecture", "AVFoundation"],
 			codeSnippets: [
 				{
-					title: "Gemini Vision API Integration",
+					title: "Gemini Vision API - Product Label Scanner",
 					language: "swift",
 					code: `class GeminiAPI {
-    private let apiKey = "YOUR_GEMINI_API_KEY"
-    private let endpoint = "https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent"
+    static let shared = GeminiAPI()
 
-    func scanProductLabel(image: UIImage) async throws -> ProductScanResult {
-        guard let imageData = image.jpegData(compressionQuality: 0.8) else {
-            throw GeminiError.imageConversionFailed
-        }
+    private let apiKey = "key"
+    private let visionEndpoint = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent"
 
-        let base64Image = imageData.base64EncodedString()
-
+    func scanProductLabel(_ image: UIImage) async throws -> ProductScanResult {
         let prompt = """
-        Analyze this product label and extract:
-        1. Product name
-        2. Product ID/SKU
-        3. Expiry date
-        4. LOT number
-        5. Quantity
-        6. Weight/volume
+        Analyze this product label image and extract the following information:
+        - Product Name
+        - Product ID (if visible)
+        - Expiry Date (format: YYYY-MM-DD)
+        - LOT Number
+        - Quantity
+        - Weight or Volume
+
+        Return the information in JSON format with keys: productName, productID, expiryDate, lotNumber, quantity, weightOrVolume
+        If any field is not visible, use "Unknown" for text fields or "0" for numeric fields.
         """
 
-        let request = GeminiRequest(
-            contents: [
-                Content(
-                    parts: [
-                        Part(text: prompt),
-                        Part(inlineData: InlineData(
-                            mimeType: "image/jpeg",
-                            data: base64Image
-                        ))
-                    ]
-                )
-            ]
-        )
+        let base64Image = image.jpegData(compressionQuality: 0.8)?.base64EncodedString() ?? ""
 
-        // Make API call and parse response
-        let response = try await makeAPICall(request)
-        return parseProductData(response)
+        let requestBody: [String: Any] = [
+            "contents": [
+                [
+                    "parts": [
+                        ["text": prompt],
+                        [
+                            "inline_data": [
+                                "mime_type": "image/jpeg",
+                                "data": base64Image
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ]
+
+        let url = URL(string: "\\(visionEndpoint)?key=\\(apiKey)")!
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = try JSONSerialization.data(withJSONObject: requestBody)
+
+        let (data, response) = try await URLSession.shared.data(for: request)
+
+        guard let httpResponse = response as? HTTPURLResponse,
+              httpResponse.statusCode == 200 else {
+            throw GeminiError.apiError("Failed to scan image")
+        }
+
+        let result = try JSONDecoder().decode(GeminiResponse.self, from: data)
+
+        guard let text = result.candidates.first?.content.parts.first?.text else {
+            throw GeminiError.invalidResponse
+        }
+
+        return try parseProductScanResult(from: text)
     }
 }`,
 				},
 				{
-					title: "SwiftUI Dashboard View",
+					title: "Expiry Tracking ViewModel",
 					language: "swift",
-					code: `struct ExpiryDashboardView: View {
-    @StateObject private var viewModel = ExpiryViewModel()
-    @State private var showScanner = false
+					code: `@MainActor
+class ExpiryViewModel: ObservableObject {
+    @Published var products: [Product] = []
+    @Published var loading = false
+    @Published var error: String?
+    @Published var lastUpdated: Date?
 
-    var body: some View {
-        ScrollView {
-            VStack(spacing: 20) {
-                // Header with stats
-                StatsCardView(
-                    criticalCount: viewModel.criticalItems.count,
-                    warningCount: viewModel.warningItems.count,
-                    totalSavings: viewModel.calculateSavings()
-                )
+    private let dataService = DataService.shared
 
-                // Scan button
-                Button(action: { showScanner = true }) {
-                    HStack {
-                        Image(systemName: "camera.fill")
-                        Text("Scan Product Label")
-                    }
-                    .frame(maxWidth: .infinity)
-                }
-                .buttonStyle(.borderedProminent)
+    func loadData() async {
+        loading = true
+        error = nil
 
-                // Critical items list
-                if !viewModel.criticalItems.isEmpty {
-                    SectionHeader(title: "Critical - Expiring Today")
-                    ForEach(viewModel.criticalItems) { item in
-                        ProductCard(product: item, status: .critical)
-                    }
-                }
-
-                // Warning items list
-                if !viewModel.warningItems.isEmpty {
-                    SectionHeader(title: "Warning - Expiring Within 7 Days")
-                    ForEach(viewModel.warningItems) { item in
-                        ProductCard(product: item, status: .warning)
-                    }
-                }
-            }
-            .padding()
+        do {
+            products = try await dataService.loadExpirationData()
+            lastUpdated = Date()
+            loading = false
+        } catch {
+            self.error = error.localizedDescription
+            loading = false
         }
-        .sheet(isPresented: $showScanner) {
-            CameraScannerView(viewModel: viewModel)
-        }
+    }
+
+    var criticalItems: [Product] {
+        products.filter { $0.daysUntilExpiry == 0 }
+    }
+
+    var warningItems: [Product] {
+        products.filter { $0.daysUntilExpiry > 0 && $0.daysUntilExpiry <= 7 }
+    }
+
+    var sortedByExpiry: [Product] {
+        products.sorted { $0.daysUntilExpiry < $1.daysUntilExpiry }
+    }
+
+    var wasteStats: WasteStats {
+        WasteStats(
+            totalProducts: products.count,
+            criticalCount: criticalItems.count,
+            warningCount: warningItems.count,
+            criticalUnits: criticalItems.reduce(0) { $0 + $1.quantity },
+            warningUnits: warningItems.reduce(0) { $0 + $1.quantity },
+            estimatedCriticalValue: criticalItems.reduce(0) { $0 + (Double($1.quantity) * 0.5) }
+        )
     }
 }`,
 				},
@@ -143,7 +162,7 @@ const ProjectDetail = () => {
 				"https://via.placeholder.com/800x600/8B5CF6/FFFFFF?text=AI+Scanner",
 				"https://via.placeholder.com/800x600/F59E0B/FFFFFF?text=Analytics+Charts",
 			],
-			videos: ["https://www.youtube.com/embed/dQw4w9WgXcQ"],
+			videos: ["https://www.youtube.com/embed/0LKZbznRNo0"],
 		},
 		helpdoku: {
 			overview: `HelpDoku is an intelligent Sudoku puzzle assistant powered by Apple Intelligence and built with SwiftUI.
@@ -325,196 +344,301 @@ func isSolved() -> Bool {
 			videos: ["https://www.youtube.com/embed/DYGyn__TXXk"],
 		},
 		heatshield: {
-			overview: `HeatShield is an iOS safety and emergency response application built with SwiftUI and Firebase.
-			The app provides real-time monitoring and alert capabilities to keep users safe and informed during critical situations.
-			It features instant notifications, location tracking, and emergency contact management.`,
+			overview: `HeatShield is an iOS safety application protecting users during extreme heat events.
+			Built with SwiftUI and integrating OpenWeatherMap API for real-time weather data, the app provides heat alerts,
+			cool zone locators, and comprehensive safety features. Won 1st place at Swift Challenge Fest for innovation and impact.`,
 			features: [
-				"Real-time safety alerts and notifications",
-				"Emergency contact management system",
-				"Location-based services for incident reporting",
-				"Firebase Cloud Messaging for instant alerts",
-				"SwiftUI-based modern and responsive interface",
+				"Real-time heat alerts with customizable temperature thresholds",
+				"Smart notification system for sunscreen and hydration reminders",
+				"Location-based cool zone finder with Apple Maps integration",
+				"Heat index calculation with 5 safety levels",
+				"Weather forecasting with UV index and air quality monitoring",
+				"OpenWeatherMap API integration for accurate weather data",
 			],
-			tech: ["Swift", "SwiftUI", "Firebase", "Firebase Cloud Messaging", "Core Location", "UserNotifications"],
+			tech: ["Swift", "SwiftUI", "OpenWeatherMap API", "Core Location", "UserNotifications", "MapKit"],
 			codeSnippets: [
 				{
-					title: "Firebase Configuration",
+					title: "Weather Manager with OpenWeatherMap API",
 					language: "swift",
-					code: `import SwiftUI
-import FirebaseCore
+					code: `class WeatherManager: ObservableObject {
+    @Published var currentWeather: WeatherData?
+    @Published var dailyForecast: [DailyForecast] = []
+    @Published var isLoading = false
 
-@main
-struct HeatShieldApp: App {
-    init() {
-        FirebaseApp.configure()
+    private let apiKey = "key"
+
+    func fetchWeather(for location: CLLocation) {
+        isLoading = true
+        errorMessage = nil
+
+        let lat = location.coordinate.latitude
+        let lon = location.coordinate.longitude
+        let urlString = "https://api.openweathermap.org/data/2.5/weather?lat=\\(lat)&lon=\\(lon)&appid=\\(apiKey)&units=metric"
+
+        guard let url = URL(string: urlString) else { return }
+
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            DispatchQueue.main.async {
+                self.isLoading = false
+
+                guard let data = data else { return }
+
+                do {
+                    let weatherResponse = try JSONDecoder().decode(WeatherResponse.self, from: data)
+                    self.currentWeather = WeatherData(from: weatherResponse)
+                } catch {
+                    print("Error: \\(error)")
+                }
+            }
+        }.resume()
     }
 
-    var body: some Scene {
-        WindowGroup {
-            ContentView()
-        }
+    func getWeatherMetrics() -> WeatherMetrics? {
+        guard let weather = currentWeather else { return nil }
+
+        return WeatherMetrics(
+            temperature: weather.temperature,
+            humidity: weather.humidity,
+            uvIndex: weather.uvIndex,
+            windSpeed: weather.windSpeed,
+            heatIndex: weather.heatIndex,
+            airQuality: generateAirQuality(for: weather.temperature),
+            visibility: generateVisibility(for: weather.humidity)
+        )
     }
 }`,
 				},
 				{
-					title: "Emergency Alert Manager",
+					title: "Notification Manager - Heat Alerts",
 					language: "swift",
-					code: `class EmergencyAlertManager: ObservableObject {
-    @Published var activeAlerts: [Alert] = []
-    @Published var emergencyContacts: [Contact] = []
+					code: `class NotificationManager: ObservableObject {
+    @Published var isAuthorized = false
+    @Published var sunscreenRemindersEnabled = true
+    @Published var hydrationRemindersEnabled = true
+    @Published var sunscreenInterval: Double = 2.0 // hours
+    @Published var hydrationInterval: Double = 2.0 // hours
 
-    func sendEmergencyAlert(type: AlertType, location: CLLocation) {
-        let alert = Alert(
-            type: type,
-            location: location,
-            timestamp: Date()
+    func requestPermission() {
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { granted, error in
+            DispatchQueue.main.async {
+                self.isAuthorized = granted
+                if granted {
+                    self.setupReminders()
+                }
+            }
+        }
+    }
+
+    func scheduleHeatAlert(temperature: Int, threshold: Double) {
+        guard isAuthorized, Double(temperature) >= threshold else { return }
+
+        let content = UNMutableNotificationContent()
+        content.title = "⚠️ Extreme Heat Alert"
+        content.body = "Temperature: \\(temperature)°C. Seek shelter immediately."
+        content.sound = UNNotificationSound.default
+        content.categoryIdentifier = "HEAT_ALERT"
+
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
+        let request = UNNotificationRequest(
+            identifier: "heat_alert_\\(UUID().uuidString)",
+            content: content,
+            trigger: trigger
         )
 
-        // Send to Firebase
-        sendToFirebase(alert)
-
-        // Notify emergency contacts
-        notifyContacts(alert)
-
-        // Update local state
-        activeAlerts.append(alert)
+        UNUserNotificationCenter.current().add(request)
     }
 
-    private func notifyContacts(_ alert: Alert) {
-        emergencyContacts.forEach { contact in
-            let message = """
-            Emergency Alert: \\(alert.type.rawValue)
-            Location: \\(alert.location.coordinate.latitude), \\(alert.location.coordinate.longitude)
-            Time: \\(alert.timestamp.formatted())
-            """
+    private func scheduleSunscreenReminder() {
+        let content = UNMutableNotificationContent()
+        content.title = "☀️ Sun Protection"
+        content.body = "Time to reapply sunscreen. Protect your skin."
+        content.sound = UNNotificationSound.default
 
-            sendSMS(to: contact.phoneNumber, message: message)
-        }
+        let trigger = UNTimeIntervalNotificationTrigger(
+            timeInterval: sunscreenInterval * 3600,
+            repeats: true
+        )
+
+        let request = UNNotificationRequest(
+            identifier: "sunscreen_reminder",
+            content: content,
+            trigger: trigger
+        )
+
+        UNUserNotificationCenter.current().add(request)
     }
 }`,
 				},
 			],
 			images: [
-				"https://via.placeholder.com/800x600/EF4444/FFFFFF?text=HeatShield+Home",
-				"https://via.placeholder.com/800x600/F97316/FFFFFF?text=Alert+System",
-				"https://via.placeholder.com/800x600/DC2626/FFFFFF?text=Emergency+Contacts",
+				"/Heatshield1.png",
+				"/Heatshield2.png",
+				"/Heatshield3.png",
+				"/Heatshield4.png",
+				"/Heashield7.png",
+				"/Heashield 8.png",
 			],
-			videos: ["https://www.youtube.com/embed/dQw4w9WgXcQ"],
+			videos: ["/HEATSHIELDVIDEO.mov"],
 		},
 		wuno: {
-			overview: `WUNO is a FIFA World Cup 2026 companion app built with SwiftUI and SwiftData.
-			The application provides comprehensive tournament information, match tracking, and AI-powered insights using Apple's Foundation Models.
-			It features App Shortcuts integration for quick access to match information and supports all World Cup 2026 matches across USA, Canada, and Mexico.`,
+			overview: `WUNO is a FIFA World Cup 2026 companion app built with SwiftUI and powered by Apple's Foundation Models.
+			The application provides comprehensive tournament information, match tracking, and AI-powered insights using on-device intelligence.
+			It features App Shortcuts integration for Siri commands and supports all World Cup 2026 matches across USA, Canada, and Mexico.`,
 			features: [
 				"Complete World Cup 2026 match schedule and tracking",
-				"AI-powered match insights using Foundation Models",
-				"App Shortcuts integration for Siri commands",
-				"SwiftData for efficient local data management",
-				"Real-time match updates and notifications",
+				"AI-powered match insights using Foundation Models (iOS 26+)",
+				"Structured output generation for match recommendations",
+				"App Shortcuts integration for Siri voice commands",
+				"Real-time match updates and smart notifications",
 				"Venue information for stadiums across North America",
+				"Personalized schedule recommendations based on preferences",
 			],
-			tech: ["Swift", "SwiftUI", "SwiftData", "App Intents", "Foundation Models", "App Shortcuts"],
+			tech: ["Swift", "SwiftUI", "Foundation Models", "App Intents", "Core Location", "App Shortcuts", "Combine"],
 			codeSnippets: [
 				{
-					title: "SwiftData Model Definition",
+					title: "Match Data Model",
 					language: "swift",
-					code: `import SwiftData
-import Foundation
-
-@Model
-class Match {
-    var id: String
-    var title: String
-    var matchDescription: String
+					code: `struct SimpleMatch: Identifiable, Codable, Hashable {
+    let id: String
+    var homeTeam: String
+    var awayTeam: String
     var date: Date
-    var teams: [String]
-    var venueName: String
-    var venueCity: String
-    var venueCountry: String
-    var importance: String
+    var stadium: String
+    var city: String
+    var phase: MatchPhase
+    var status: MatchStatus
+    var score: MatchScore?
+    var importance: SimpleMatchImportance
 
-    init(id: String, title: String, description: String, date: Date,
-         teams: [String], venueName: String, venueCity: String,
-         venueCountry: String, importance: String) {
-        self.id = id
-        self.title = title
-        self.matchDescription = description
-        self.date = date
-        self.teams = teams
-        self.venueName = venueName
-        self.venueCity = venueCity
-        self.venueCountry = venueCountry
-        self.importance = importance
+    var teamsDisplayName: String {
+        "\\(homeTeam) vs \\(awayTeam)"
+    }
+
+    var isToday: Bool {
+        Calendar.current.isDateInToday(date)
+    }
+
+    var isLive: Bool {
+        status == .live
+    }
+
+    var formattedDate: String {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .short
+        return formatter.string(from: date)
+    }
+
+    // AI-friendly description for voice interactions
+    var voiceDescription: String {
+        let timeDescription = isToday ? "today" : formattedDate
+        let statusDescription = isLive ? "currently playing" : "scheduled"
+        return "\\(teamsDisplayName) in \\(city), \\(timeDescription), \\(statusDescription)"
+    }
+
+    var searchKeywords: [String] {
+        var keywords = [homeTeam, awayTeam, city, stadium, phase.rawValue]
+        if isToday { keywords.append("today") }
+        if isLive { keywords.append("live") }
+        return keywords.map { $0.lowercased() }
     }
 }`,
 				},
 				{
-					title: "Foundation Model Integration",
+					title: "Foundation Models Manager",
 					language: "swift",
-					code: `import AppIntents
-
-class FoundationModelManager {
+					code: `@MainActor
+class FoundationModelManager: ObservableObject {
     static let shared = FoundationModelManager()
 
-    func prewarmModel() async {
-        // Prewarm the model for better performance
-        do {
-            try await generateMatchInsights(for: "Sample match")
-        } catch {
-            print("Prewarm failed: \\(error)")
+    @Published var modelAvailability: ModelAvailability = .checking
+    @Published var isProcessing = false
+
+    private var model: SystemLanguageModel?
+    private var currentSession: LanguageModelSession?
+
+    private func checkModelAvailability() {
+        guard #available(iOS 26.0, *) else {
+            modelAvailability = .unavailable(reason: "Requires iOS 26.0 or later")
+            return
+        }
+
+        model = SystemLanguageModel.default
+
+        guard let model = model else {
+            modelAvailability = .unavailable(reason: "Model not found")
+            return
+        }
+
+        switch model.availability {
+        case .available:
+            modelAvailability = .available
+        case .unavailable(.appleIntelligenceNotEnabled):
+            modelAvailability = .unavailable(reason: "Enable Apple Intelligence in Settings")
+        case .unavailable(.modelNotReady):
+            modelAvailability = .unavailable(reason: "Model downloading")
+        default:
+            modelAvailability = .unavailable(reason: "Model unavailable")
         }
     }
 
-    func generateMatchInsights(for match: Match) async throws -> String {
+    func generateMatchInsights(for match: Match) async throws -> WorldCupInsights {
+        guard case .available = modelAvailability else {
+            throw ModelError.modelNotLoaded
+        }
+
+        isProcessing = true
+        defer { isProcessing = false }
+
+        let instructions = """
+        You are a World Cup 2026 assistant. Provide:
+        1. Match prediction (max 30 words)
+        2. Tactical analysis (max 40 words)
+        3. Historical context (max 30 words)
+        4. Why watch this match (max 25 words)
+        """
+
+        let session = LanguageModelSession(instructions: instructions)
+
         let prompt = """
-        Analyze this World Cup match:
-        \\(match.teams[0]) vs \\(match.teams[1])
+        Match: \\(match.teams.joined(separator: " vs "))
         Venue: \\(match.venueName), \\(match.venueCity)
-        Provide brief insights about this matchup.
+        Date: \\(match.date.formatted())
         """
 
-        // Use Foundation Model to generate insights
-        let response = try await FoundationModelAPI.generateContent(prompt: prompt)
-        return response
+        let response = try await session.respond(
+            to: prompt,
+            generating: MatchInsightResponse.self
+        )
+
+        return WorldCupInsights(
+            matchPrediction: response.content.prediction,
+            keyPlayersToWatch: response.content.keyPlayers,
+            tacticalAnalysis: response.content.tacticalAnalysis,
+            historicalContext: response.content.historicalContext,
+            confidenceLevel: response.content.confidence,
+            recommendationReason: response.content.reason
+        )
     }
-}`,
-				},
-				{
-					title: "App Shortcuts",
-					language: "swift",
-					code: `import AppIntents
+}
 
-struct GetNextMatchIntent: AppIntent {
-    static var title: LocalizedStringResource = "Get Next Match"
-    static var description = IntentDescription("Get information about the next World Cup match")
-
-    func perform() async throws -> some IntentResult & ProvidesDialog {
-        let dataManager = WUNODataManager.shared
-        let upcomingMatches = dataManager.getUpcomingMatches(limit: 1)
-
-        guard let nextMatch = upcomingMatches.first else {
-            return .result(dialog: "No upcoming matches found")
-        }
-
-        let message = """
-        Next Match: \\(nextMatch.title)
-        \\(nextMatch.teams[0]) vs \\(nextMatch.teams[1])
-        Date: \\(nextMatch.date.formatted())
-        Venue: \\(nextMatch.venueName), \\(nextMatch.venueCity)
-        """
-
-        return .result(dialog: message)
-    }
+@Generable
+struct MatchInsightResponse: Equatable {
+    let prediction: String
+    let keyPlayers: [String]
+    let tacticalAnalysis: String
+    let historicalContext: String
+    let confidence: Double
+    let reason: String
 }`,
 				},
 			],
 			images: [
-				"https://via.placeholder.com/800x600/2563EB/FFFFFF?text=WUNO+Home+Screen",
-				"https://via.placeholder.com/800x600/7C3AED/FFFFFF?text=Match+Schedule",
-				"https://via.placeholder.com/800x600/DB2777/FFFFFF?text=AI+Insights",
-				"https://via.placeholder.com/800x600/059669/FFFFFF?text=Venue+Information",
+				"/WUNO1.png",
+				"/WUNO2.png",
+				"/WUNO3.png",
 			],
-			videos: ["https://www.youtube.com/embed/dQw4w9WgXcQ"],
+			videos: ["/WUNOVID.mov"],
 		},
 		kaapeh: {
 			overview: `Kaapeh Mexico is an innovative iOS mobile application for coffee traceability using Blockchain technology.
@@ -522,91 +646,13 @@ struct GetNextMatchIntent: AppIntent {
 			By implementing blockchain-based tracking, Kaapeh allows consumers and producers to verify the authenticity and journey of their coffee from farm to cup.`,
 			features: [
 				"Blockchain-based coffee traceability for complete supply chain visibility",
-				"Machine Learning integration for pattern detection and quality analysis",
 				"SwiftData for efficient local data persistence",
 				"Real-time quality metrics and certification tracking",
 				"Global team collaboration with international coffee producers",
 				"Transparent supply chain verification for consumers",
+				"Secure cryptographic hashing for data integrity",
 			],
-			tech: ["Swift", "SwiftUI", "SwiftData", "Blockchain", "Machine Learning", "Core ML", "REST APIs"],
-			codeSnippets: [
-				{
-					title: "Blockchain Transaction Model",
-					language: "swift",
-					code: `import SwiftData
-import CryptoKit
-
-@Model
-class CoffeeTransaction {
-    var id: UUID
-    var timestamp: Date
-    var blockHash: String
-    var previousHash: String
-    var coffeeID: String
-    var origin: String
-    var producer: String
-    var certifications: [String]
-    var qualityScore: Double
-
-    init(coffeeID: String, origin: String, producer: String, certifications: [String], qualityScore: Double, previousHash: String) {
-        self.id = UUID()
-        self.timestamp = Date()
-        self.coffeeID = coffeeID
-        self.origin = origin
-        self.producer = producer
-        self.certifications = certifications
-        self.qualityScore = qualityScore
-        self.previousHash = previousHash
-        self.blockHash = self.calculateHash()
-    }
-
-    func calculateHash() -> String {
-        let data = "\\(id)\\(timestamp)\\(coffeeID)\\(origin)\\(producer)\\(previousHash)"
-        let inputData = Data(data.utf8)
-        let hashed = SHA256.hash(data: inputData)
-        return hashed.compactMap { String(format: "%02x", $0) }.joined()
-    }
-}`,
-				},
-				{
-					title: "ML Quality Analysis",
-					language: "swift",
-					code: `import CoreML
-import Vision
-
-class QualityAnalyzer {
-    private let model: VNCoreMLModel
-
-    init() throws {
-        let config = MLModelConfiguration()
-        let mlModel = try CoffeeQualityClassifier(configuration: config)
-        self.model = try VNCoreMLModel(for: mlModel.model)
-    }
-
-    func analyzeQuality(image: UIImage) async throws -> QualityResult {
-        guard let cgImage = image.cgImage else {
-            throw QualityError.invalidImage
-        }
-
-        let request = VNCoreMLRequest(model: model)
-        let handler = VNImageRequestHandler(cgImage: cgImage)
-
-        try handler.perform([request])
-
-        guard let results = request.results as? [VNClassificationObservation],
-              let topResult = results.first else {
-            throw QualityError.analysisFailed
-        }
-
-        return QualityResult(
-            grade: topResult.identifier,
-            confidence: topResult.confidence,
-            defects: extractDefects(from: results)
-        )
-    }
-}`,
-				},
-			],
+			tech: ["Swift", "SwiftUI", "SwiftData", "Blockchain", "CryptoKit", "REST APIs"],
 			images: [
 				"/Kaffi1.png",
 				"/Kaffi2.png",
@@ -1160,14 +1206,26 @@ module.exports = mongoose.model('Energy', EnergySchema);`,
 								<div className="videos-container">
 									{data.videos.map((video, index) => (
 										<div key={index} className="video-wrapper">
-											<iframe
-												src={video}
-												title={`${project.title} demo video ${index + 1}`}
-												frameBorder="0"
-												allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-												allowFullScreen
-												className="video-iframe"
-											></iframe>
+											{video.startsWith('http') ? (
+												<iframe
+													src={video}
+													title={`${project.title} demo video ${index + 1}`}
+													frameBorder="0"
+													allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+													allowFullScreen
+													className="video-iframe"
+												></iframe>
+											) : (
+												<video
+													controls
+													className="video-iframe"
+													preload="metadata"
+												>
+													<source src={video} type="video/quicktime" />
+													<source src={video} type="video/mp4" />
+													Your browser does not support the video tag.
+												</video>
+											)}
 										</div>
 									))}
 								</div>
@@ -1180,7 +1238,7 @@ module.exports = mongoose.model('Energy', EnergySchema);`,
 								<h2 className="section-title">Try Me!</h2>
 								<div className="qr-code-container">
 									<p className="qr-code-description">
-										Scan the QR code below to try the app on your device
+										Scan the QR code below to access the web app
 									</p>
 									<div className="qr-code-wrapper">
 										<img
