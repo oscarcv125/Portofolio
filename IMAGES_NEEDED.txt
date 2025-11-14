@@ -1,0 +1,346 @@
+================================================================================
+PORTFOLIO IMAGES CHECKLIST
+================================================================================
+Oscar Cardenas - Software Engineer Portfolio
+Created: November 2025
+
+This file lists all the images you need to replace the placeholder images
+in your portfolio. Save your actual project screenshots with these names
+in the /public folder of your React app.
+
+================================================================================
+PROJECT 1: KAAPEH MEXICO - Coffee Traceability App
+================================================================================
+Location: /project/kaapeh
+
+Image 1: kaapeh-01-traceability.png (800x600px recommended)
+   - Screenshot showing the coffee traceability dashboard
+   - Should display blockchain transaction history
+   - Show coffee journey from farm to cup
+
+Image 2: kaapeh-02-blockchain.png (800x600px recommended)
+   - Blockchain verification screen
+   - Display hash verification and transaction details
+   - Show proof of authenticity features
+
+Image 3: kaapeh-03-quality.png (800x600px recommended)
+   - ML quality analysis interface
+   - Show camera scanning a coffee product
+   - Display quality score and defect detection results
+
+Image 4: kaapeh-04-producer.png (800x600px recommended)
+   - Producer dashboard view
+   - Show producer profile and their coffee listings
+   - Display certifications and quality metrics
+
+Video: kaapeh-demo.mp4 (or YouTube link)
+   - Demo of scanning a coffee product
+   - Show complete traceability flow
+   - Demonstrate blockchain verification
+
+
+================================================================================
+PROJECT 2: SEMEX - Traffic Simulation
+================================================================================
+Location: /project/semex
+
+Image 1: semex-01-simulation.png (800x600px recommended)
+   - Overall traffic simulation view
+   - Show intersection with multiple lanes
+   - Display cars at different positions
+
+Image 2: semex-02-agents.png (800x600px recommended)
+   - Car agent behavior visualization
+   - Show different car states (stopped, moving, turning)
+   - Highlight lane assignments
+
+Image 3: semex-03-unity.png (800x600px recommended)
+   - Unity visualization client screenshot
+   - Show 3D view of the intersection
+   - Display real-time traffic flow
+
+Image 4: semex-04-coordination.png (800x600px recommended)
+   - Traffic light coordination diagram
+   - Show different phases (North/South, Left Arrow, East, West)
+   - Display timing information
+
+Video: semex-demo.mp4 (or YouTube link)
+   - Full simulation running
+   - Show traffic flow improvements
+   - Demonstrate protected left turns
+
+
+================================================================================
+PROJECT 3: GATEGENIE (HackMTY 2025)
+================================================================================
+Location: /project/gategenie
+
+Image 1: gategenie-01-dashboard.png (800x600px recommended)
+   - Main dashboard overview
+   - Show all 4 modules: Expiration, Consumption, Productivity, Smart Assignment
+   - Display key metrics and statistics
+
+Image 2: gategenie-02-expiration.png (800x600px recommended)
+   - Expiration tracking screen
+   - Show critical items expiring today
+   - Display warning items expiring within 7 days
+
+Image 3: gategenie-03-scanner.png (800x600px recommended)
+   - Camera scanner interface
+   - Show Gemini Vision API scanning a product label
+   - Display extracted information (name, ID, expiry date, etc.)
+
+Image 4: gategenie-04-charts.png (800x600px recommended)
+   - Analytics and charts view
+   - Show consumption predictions
+   - Display waste reduction metrics and savings
+
+Video: gategenie-demo.mp4 (or YouTube link)
+   - Demo of scanning product labels
+   - Show smart assignment feature
+   - Highlight $164M problem solution
+
+
+================================================================================
+PROJECT 4: HEATSHIELD (1st Place - Swift Challenge Fest)
+================================================================================
+Location: /project/heatshield
+
+Image 1: heatshield-01-home.png (800x600px recommended)
+   - Home screen with current temperature
+   - Show heat alert status
+   - Display quick action buttons
+
+Image 2: heatshield-02-alerts.png (800x600px recommended)
+   - Alert system interface
+   - Show active heat warnings
+   - Display notification settings
+
+Image 3: heatshield-03-contacts.png (800x600px recommended)
+   - Emergency contacts management screen
+   - Show shelter locator with Apple Maps
+   - Display nearby cooling centers
+
+Video: heatshield-demo.mp4 (or YouTube link)
+   - Demo of heat alert notifications
+   - Show shelter locator functionality
+   - Highlight 500+ user milestone
+
+
+================================================================================
+PROJECT 5: WUNO - World Cup 2026 App
+================================================================================
+Location: /project/wuno
+
+Image 1: wuno-01-home.png (800x600px recommended)
+   - Home screen showing upcoming matches
+   - Display FIFA World Cup 2026 branding
+   - Show match countdown
+
+Image 2: wuno-02-schedule.png (800x600px recommended)
+   - Complete match schedule view
+   - Show matches organized by date
+   - Display venue information
+
+Image 3: wuno-03-insights.png (800x600px recommended)
+   - AI-powered match insights screen
+   - Show Foundation Model predictions
+   - Display team analysis
+
+Image 4: wuno-04-venues.png (800x600px recommended)
+   - Venue information page
+   - Show stadium details (USA, Canada, Mexico)
+   - Display map and capacity info
+
+Video: wuno-demo.mp4 (or YouTube link)
+   - Demo of App Shortcuts with Siri
+   - Show match notifications
+   - Highlight SwiftData functionality
+
+
+================================================================================
+PROJECT 6: CREDIFIEL DATATHON (2nd Place)
+================================================================================
+Location: /project/credifiel
+
+Image 1: credifiel-01-analysis.png (800x600px recommended)
+   - Data analysis dashboard
+   - Show strategy effectiveness metrics
+   - Display before/after comparison (25 → 13 strategies)
+
+Image 2: credifiel-02-performance.png (800x600px recommended)
+   - Strategy performance charts
+   - Show recovery success rate improvement (18%)
+   - Display ML model predictions
+
+Image 3: credifiel-03-predictions.png (800x600px recommended)
+   - Machine learning model interface
+   - Show feature importance visualization
+   - Display prediction accuracy metrics
+
+Video: credifiel-demo.mp4 (or YouTube link)
+   - Presentation of results
+   - Show data analysis process
+   - Highlight 2nd place achievement
+
+
+================================================================================
+PROJECT 7: AWAQ - Environmental Platform
+================================================================================
+Location: /project/awaq
+
+Image 1: awaq-01-platform.png (800x600px recommended)
+   - Main platform landing page
+   - Show environmental mission statement
+   - Display call-to-action buttons
+
+Image 2: awaq-02-dashboard.png (800x600px recommended)
+   - Environmental impact dashboard
+   - Show carbon saved, trees planted metrics
+   - Display user achievements
+
+Image 3: awaq-03-game.png (800x600px recommended)
+   - Unity educational game screenshot
+   - Show gameplay focused on environmental education
+   - Display game characters or environment
+
+Image 4: awaq-04-tracking.png (800x600px recommended)
+   - Impact tracking interface
+   - Show community statistics
+   - Display leaderboard or social features
+
+Video: awaq-demo.mp4 (or YouTube link)
+   - Platform overview walkthrough
+   - Unity game demo
+   - Show social impact features
+
+
+================================================================================
+PROJECT 8: HACKATHON IBERDROLA (3rd Place)
+================================================================================
+Location: /project/iberdrola
+
+Image 1: iberdrola-01-solar.png (800x600px recommended)
+   - Solar infrastructure diagram
+   - Show micro-grid implementation
+   - Display panel installation in rural Oaxaca
+
+Image 2: iberdrola-02-dashboard.png (800x600px recommended)
+   - Community energy management dashboard
+   - Show energy consumption and generation metrics
+   - Display cost savings for 4,500+ residents
+
+Image 3: iberdrola-03-monitoring.png (800x600px recommended)
+   - Energy monitoring app interface
+   - Show real-time power usage
+   - Display battery levels and solar generation
+
+Video: iberdrola-demo.mp4 (or YouTube link)
+   - Project presentation
+   - Show rural community impact
+   - Highlight 3rd place achievement
+
+
+================================================================================
+HOMEPAGE IMAGE
+================================================================================
+
+Image: homepage.jpg (recommended size: 400x400px or similar)
+   - Professional photo of Oscar Cardenas
+   - Should be high quality and well-lit
+   - Can be a headshot or professional portrait
+   - Will appear on the main homepage
+
+
+================================================================================
+IMPLEMENTATION INSTRUCTIONS
+================================================================================
+
+1. Save all images in the /public folder of your React app:
+   /Users/isachairez/Downloads/Port/reactfolio-master/public/
+
+2. Update the image paths in projectDetail.jsx (line ~218-807):
+   - Replace "https://via.placeholder.com/..." with your actual image filenames
+   - Example: "https://via.placeholder.com/800x600/..." → "/kaapeh-01-traceability.png"
+
+3. For videos:
+   - Upload to YouTube (recommended)
+   - Replace "https://www.youtube.com/embed/dQw4w9WgXcQ" with your actual video URLs
+   - Alternative: Use local .mp4 files in /public folder
+
+4. Image specifications:
+   - Format: PNG or JPG
+   - Recommended size: 800x600px (or maintain 4:3 aspect ratio)
+   - File size: Keep under 500KB for web performance
+   - Quality: High resolution but optimized for web
+
+5. Naming convention:
+   - Use lowercase letters
+   - Separate words with hyphens
+   - Include project name prefix
+   - Example: "kaapeh-01-traceability.png"
+
+
+================================================================================
+PRIORITY ORDER (if you need to add images gradually)
+================================================================================
+
+HIGH PRIORITY (Most important for first impression):
+1. Homepage image (homepage.jpg)
+2. GateGenie screenshots (HackMTY project)
+3. HeatShield screenshots (1st place winner)
+4. WUNO screenshots
+
+MEDIUM PRIORITY:
+5. Semex Traffic Simulation
+6. Kaapeh Mexico
+7. Credifiel Datathon
+
+LOWER PRIORITY (can use placeholders temporarily):
+8. AWAQ
+9. Iberdrola
+
+
+================================================================================
+TIPS FOR GOOD SCREENSHOTS
+================================================================================
+
+1. Use consistent lighting and color schemes across project screenshots
+2. Crop images to focus on the most important UI elements
+3. Ensure text in screenshots is readable
+4. Use the same device/simulator for iOS app screenshots
+5. Consider using mockup generators for a more polished look
+6. Add subtle shadows or borders to make images pop
+7. Remove any sensitive data or API keys before taking screenshots
+
+
+================================================================================
+MOCKUP TOOLS (OPTIONAL)
+================================================================================
+
+For iOS Apps:
+- Apple Device Mockups: https://www.apple.com/newsroom/images/
+- Mockuuups Studio: https://mockuuups.studio/
+- Previewed: https://previewed.app/
+
+For Web Apps:
+- Screely: https://www.screely.com/
+- MockUPhone: https://mockuphone.com/
+
+For Videos:
+- Screen Recording: Use QuickTime (Mac) or built-in screen recorder
+- iMovie or DaVinci Resolve for editing
+- Keep videos under 2 minutes for best engagement
+
+
+================================================================================
+NEED HELP?
+================================================================================
+
+If you need assistance:
+1. Check that images are in the correct /public folder
+2. Verify file names match exactly (case-sensitive)
+3. Clear browser cache if images don't update
+4. Check browser console for image loading errors
+
+Good luck with your portfolio! 🚀

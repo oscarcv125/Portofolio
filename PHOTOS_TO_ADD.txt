@@ -1,0 +1,72 @@
+================================================================================
+PHOTOS YOU NEED TO ADD TO YOUR PORTFOLIO
+================================================================================
+
+HOMEPAGE
+--------
+1. homepage.jpg - Your professional photo/headshot
+
+
+KAAPEH MEXICO (4 photos)
+------------------------
+1. Coffee traceability dashboard with blockchain transactions
+2. Blockchain verification screen showing hash and proof
+3. ML quality analysis - camera scanning coffee with results
+4. Producer dashboard with certifications
+
+
+SEMEX TRAFFIC SIMULATION (4 photos)
+------------------------------------
+1. Traffic simulation overview showing intersection
+2. Car agents with different behaviors/states
+3. Unity 3D visualization of the intersection
+4. Traffic light phases diagram
+
+
+GATEGENIE - HackMTY 2025 (4 photos)
+------------------------------------
+1. Main dashboard with all 4 modules
+2. Expiration tracking with critical/warning items
+3. Camera scanner using Gemini Vision API
+4. Analytics charts showing consumption predictions
+
+
+HEATSHIELD - 1st Place (3 photos)
+----------------------------------
+1. Home screen with temperature and heat alerts
+2. Alert system with notifications
+3. Emergency contacts and shelter locator map
+
+
+WUNO - World Cup 2026 (4 photos)
+---------------------------------
+1. Home screen with upcoming matches
+2. Match schedule by date
+3. AI insights with predictions
+4. Venue information with stadiums
+
+
+CREDIFIEL DATATHON - 2nd Place (3 photos)
+------------------------------------------
+1. Data analysis dashboard (25→13 strategies)
+2. Strategy performance charts (18% improvement)
+3. ML model predictions and accuracy
+
+
+AWAQ - Environmental Platform (4 photos)
+-----------------------------------------
+1. Platform landing page
+2. Environmental impact dashboard (carbon, trees)
+3. Unity educational game screenshot
+4. Community impact tracking
+
+
+IBERDROLA - 3rd Place (3 photos)
+---------------------------------
+1. Solar infrastructure/micro-grid diagram
+2. Community energy dashboard (4,500+ residents)
+3. Energy monitoring app interface
+
+================================================================================
+TOTAL: 33 photos needed
+================================================================================
