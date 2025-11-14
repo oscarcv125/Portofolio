@@ -614,7 +614,8 @@ class QualityAnalyzer {
 				"/Kaffi4.png",
 				"/Kaffi5.png",
 			],
-			videos: ["https://www.youtube.com/embed/dQw4w9WgXcQ"],
+			videos: ["https://www.youtube.com/embed/_kFvWmLoLKA"],
+			qrCode: "/QRKaffi.png",
 		},
 		semex: {
 			overview: `Semex Traffic Simulation is an intelligent traffic light system developed in collaboration with Semex (Semáforos Mexicanos).
@@ -1169,6 +1170,25 @@ module.exports = mongoose.model('Energy', EnergySchema);`,
 											></iframe>
 										</div>
 									))}
+								</div>
+							</section>
+						)}
+
+						{/* QR Code Section */}
+						{data.qrCode && (
+							<section className="project-section">
+								<h2 className="section-title">Try Me!</h2>
+								<div className="qr-code-container">
+									<p className="qr-code-description">
+										Scan the QR code below to try the app on your device
+									</p>
+									<div className="qr-code-wrapper">
+										<img
+											src={data.qrCode}
+											alt={`${project.title} QR Code`}
+											className="qr-code-image"
+										/>
+									</div>
 								</div>
 							</section>
 						)}
