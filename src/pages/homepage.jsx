@@ -1,167 +1,276 @@
 import React, { useState, useEffect } from "react";
 import { Helmet } from "react-helmet";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { Link } from "react-router-dom";
 
 import { faMailBulk, faPhone } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-	faInstagram,
-	faLinkedin,
-} from "@fortawesome/free-brands-svg-icons";
+import { faInstagram, faLinkedin, faGithub } from "@fortawesome/free-brands-svg-icons";
 
-import Logo from "../components/common/logo";
-import Footer from "../components/common/footer";
 import NavBar from "../components/common/navBar";
-import AllProjects from "../components/projects/allProjects";
+import ProjectCard from "../components/projects/ProjectCard";
+import ParticlesBackground from "../components/common/ParticlesBackground";
 
 import INFO from "../data/user";
 import SEO from "../data/seo";
 
-import "./styles/homepage.css";
-
 const Homepage = () => {
-	const [stayLogo, setStayLogo] = useState(false);
-	const [logoSize, setLogoSize] = useState(80);
-	const [oldLogoSize, setOldLogoSize] = useState(80);
+	const [displayedText, setDisplayedText] = useState("");
+	const [currentRoleIndex, setCurrentRoleIndex] = useState(0);
+	const { scrollY } = useScroll();
+	const y = useTransform(scrollY, [0, 300], [0, -50]);
+
+	const roles = [
+		"Software Engineer",
+		"iOS Developer",
+		"Full-Stack Developer",
+		"AI Enthusiast",
+		"Problem Solver"
+	];
 
 	useEffect(() => {
 		window.scrollTo(0, 0);
 	}, []);
 
+	// Typewriter effect
 	useEffect(() => {
-		const handleScroll = () => {
-			let scroll = Math.round(window.pageYOffset, 2);
+		const currentRole = roles[currentRoleIndex];
+		let currentIndex = 0;
+		let isDeleting = false;
+		let timeout;
 
-			let newLogoSize = 80 - (scroll * 4) / 10;
-
-			if (newLogoSize < oldLogoSize) {
-				if (newLogoSize > 40) {
-					setLogoSize(newLogoSize);
-					setOldLogoSize(newLogoSize);
-					setStayLogo(false);
-				} else {
-					setStayLogo(true);
-				}
-			} else {
-				setLogoSize(newLogoSize);
-				setStayLogo(false);
+		const typeWriter = () => {
+			if (!isDeleting && currentIndex <= currentRole.length) {
+				setDisplayedText(currentRole.substring(0, currentIndex));
+				currentIndex++;
+				timeout = setTimeout(typeWriter, 100);
+			} else if (!isDeleting && currentIndex > currentRole.length) {
+				timeout = setTimeout(() => {
+					isDeleting = true;
+					typeWriter();
+				}, 2000);
+			} else if (isDeleting && currentIndex > 0) {
+				currentIndex--;
+				setDisplayedText(currentRole.substring(0, currentIndex));
+				timeout = setTimeout(typeWriter, 50);
+			} else if (isDeleting && currentIndex === 0) {
+				isDeleting = false;
+				setCurrentRoleIndex((prev) => (prev + 1) % roles.length);
 			}
 		};
 
-		window.addEventListener("scroll", handleScroll);
-		return () => window.removeEventListener("scroll", handleScroll);
-	}, [logoSize, oldLogoSize]);
+		typeWriter();
+		return () => clearTimeout(timeout);
+	}, [currentRoleIndex]);
 
 	const currentSEO = SEO.find((item) => item.page === "home");
 
-	const logoStyle = {
-		display: "flex",
-		position: stayLogo ? "fixed" : "relative",
-		top: stayLogo ? "3vh" : "auto",
-		zIndex: 999,
-		border: stayLogo ? "1px solid white" : "none",
-		borderRadius: stayLogo ? "50%" : "none",
-		boxShadow: stayLogo ? "0px 4px 10px rgba(0, 0, 0, 0.25)" : "none",
+	const containerVariants = {
+		hidden: { opacity: 0 },
+		visible: {
+			opacity: 1,
+			transition: {
+				delayChildren: 0.3,
+				staggerChildren: 0.2
+			}
+		}
+	};
+
+	const itemVariants = {
+		hidden: { y: 20, opacity: 0 },
+		visible: {
+			y: 0,
+			opacity: 1
+		}
 	};
 
 	return (
-		<React.Fragment>
+		<div className="min-h-screen overflow-hidden">
 			<Helmet>
 				<title>{INFO.main.title}</title>
-				<meta name="description" content={currentSEO.description} />
-				<meta
-					name="keywords"
-					content={currentSEO.keywords.join(", ")}
-				/>
+				<meta name="description" content={currentSEO?.description || ""} />
+				<meta name="keywords" content={currentSEO?.keywords.join(", ") || ""} />
 			</Helmet>
 
-			<div className="page-content">
-				<NavBar active="home" />
-				<div className="content-wrapper">
-					<div className="homepage-logo-container">
-						<div style={logoStyle}>
-							<Logo width={logoSize} link={false} />
-						</div>
-					</div>
+			<ParticlesBackground />
+			<NavBar />
 
-					<div className="homepage-container">
-						<div className="homepage-first-area">
-							<div className="homepage-first-area-left-side">
-								<div className="title homepage-title">
-									{INFO.homepage.title}
-								</div>
-
-								<div className="subtitle homepage-subtitle">
-									{INFO.homepage.description}
-								</div>
-							</div>
-
-							<div className="homepage-first-area-right-side">
-								<div className="homepage-image-container">
-									<div className="homepage-image-wrapper">
-										<img
-											src="homepage.jpeg"
-											alt="about"
-											className="homepage-image"
+			{/* Hero Section */}
+			<motion.section
+				style={{ y }}
+				className="relative min-h-screen flex items-center justify-center px-8 md:px-6 pt-32 pb-20"
+			>
+				<div className="max-w-6xl mx-auto w-full">
+					<motion.div
+						variants={containerVariants}
+						initial="hidden"
+						animate="visible"
+						className="grid md:grid-cols-2 gap-12 items-center"
+					>
+						{/* Left Side - Text Content */}
+						<motion.div variants={itemVariants} className="space-y-6">
+							<motion.div
+								initial={{ opacity: 0, y: 20 }}
+								animate={{ opacity: 1, y: 0 }}
+								className="space-y-2"
+							>
+								<h2 className="text-2xl md:text-3xl font-mono dark:text-cyan-400 text-cyan-600">
+									Hi, I'm
+								</h2>
+								<h1 className="text-5xl md:text-7xl font-bold gradient-text">
+									{INFO.main.name}
+								</h1>
+								<div className="h-16 md:h-20">
+									<h2 className="text-3xl md:text-4xl font-mono dark:text-purple-300 text-purple-600">
+										{displayedText}
+										<motion.span
+											animate={{ opacity: [1, 0, 1] }}
+											transition={{ duration: 0.8, repeat: Infinity }}
+											className="inline-block w-1 h-8 md:h-10 dark:bg-purple-400 bg-purple-600 ml-1"
 										/>
-									</div>
+									</h2>
 								</div>
-							</div>
-						</div>
+							</motion.div>
 
-						<div className="homepage-socials">
-							<a
-								href={INFO.socials.linkedin}
-								target="_blank"
-								rel="noreferrer"
+							<motion.p
+								variants={itemVariants}
+								className="text-lg md:text-xl dark:text-gray-300 text-gray-700 leading-relaxed"
 							>
-								<FontAwesomeIcon
-									icon={faLinkedin}
-									className="homepage-social-icon"
-								/>
-							</a>
-							<a
-								href={INFO.socials.instagram}
-								target="_blank"
-								rel="noreferrer"
-							>
-								<FontAwesomeIcon
-									icon={faInstagram}
-									className="homepage-social-icon"
-								/>
-							</a>
-							<a
-								href={`mailto:${INFO.main.email}`}
-								target="_blank"
-								rel="noreferrer"
-							>
-								<FontAwesomeIcon
-									icon={faMailBulk}
-									className="homepage-social-icon"
-								/>
-							</a>
-							<a
-								href={`tel:${INFO.main.phone}`}
-								target="_blank"
-								rel="noreferrer"
-							>
-								<FontAwesomeIcon
-									icon={faPhone}
-									className="homepage-social-icon"
-								/>
-							</a>
-						</div>
+								{INFO.homepage.description.substring(0, 200)}...
+							</motion.p>
 
-						<div className="homepage-projects">
-							<AllProjects />
-						</div>
+							{/* Social Icons */}
+							<motion.div variants={itemVariants} className="flex gap-4 pt-4">
+								{[
+									{ icon: faLinkedin, link: INFO.socials.linkedin, color: "hover:text-blue-400" },
+									{ icon: faInstagram, link: INFO.socials.instagram, color: "hover:text-pink-400" },
+									{ icon: faMailBulk, link: `mailto:${INFO.main.email}`, color: "hover:text-cyan-400" },
+									{ icon: faPhone, link: `tel:${INFO.main.phone}`, color: "hover:text-purple-400" },
+								].map((social, index) => (
+									<motion.a
+										key={index}
+										href={social.link}
+										target="_blank"
+										rel="noreferrer"
+										whileHover={{ scale: 1.2, rotate: 5 }}
+										whileTap={{ scale: 0.9 }}
+										className={`w-14 h-14 rounded-full glass flex items-center justify-center dark:text-gray-300 text-gray-700 ${social.color} transition-all duration-300`}
+									>
+										<FontAwesomeIcon icon={social.icon} className="text-2xl" />
+									</motion.a>
+								))}
+							</motion.div>
 
-						<div className="page-footer">
-							<Footer />
-						</div>
-					</div>
+							{/* CTA Buttons */}
+							<motion.div variants={itemVariants} className="flex flex-wrap gap-4 pt-4">
+								<Link to="/projects">
+									<motion.button
+										whileHover={{ scale: 1.05 }}
+										whileTap={{ scale: 0.95 }}
+										className="px-8 py-4 bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 rounded-full font-mono font-bold text-white shadow-lg hover:shadow-xl transition-all duration-300"
+									>
+										View My Work
+									</motion.button>
+								</Link>
+								<Link to="/contact">
+									<motion.button
+										whileHover={{ scale: 1.05 }}
+										whileTap={{ scale: 0.95 }}
+										className="px-8 py-4 glass-strong rounded-full font-mono font-bold text-white hover:bg-white/20 transition-all duration-300"
+									>
+										Get In Touch
+									</motion.button>
+								</Link>
+							</motion.div>
+						</motion.div>
+
+						{/* Right Side - Animated Image */}
+						<motion.div
+							variants={itemVariants}
+							className="relative flex items-center justify-center"
+						>
+							<motion.div
+								animate={{
+									rotate: [0, 5, -5, 0],
+								}}
+								transition={{
+									duration: 5,
+									repeat: Infinity,
+									ease: "easeInOut"
+								}}
+								className="relative"
+							>
+								<div className="absolute inset-0 bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 rounded-3xl blur-2xl opacity-30 animate-pulse"></div>
+								<div className="relative glass-strong rounded-3xl p-2 glow-effect">
+									<img
+										src="/homepage.jpeg"
+										alt={INFO.main.name}
+										className="rounded-2xl w-full max-w-md object-cover"
+									/>
+								</div>
+							</motion.div>
+						</motion.div>
+					</motion.div>
 				</div>
-			</div>
-		</React.Fragment>
+
+				{/* Scroll Indicator */}
+				<motion.div
+					animate={{ y: [0, 10, 0] }}
+					transition={{ duration: 1.5, repeat: Infinity }}
+					className="absolute bottom-10 left-1/2 transform -translate-x-1/2"
+				>
+					<div className="w-6 h-10 border-2 dark:border-white/30 border-gray-400/50 rounded-full flex justify-center p-2">
+						<motion.div
+							animate={{ y: [0, 12, 0] }}
+							transition={{ duration: 1.5, repeat: Infinity }}
+							className="w-1 h-2 dark:bg-white/50 bg-gray-600 rounded-full"
+						/>
+					</div>
+				</motion.div>
+			</motion.section>
+
+			{/* Featured Projects Section */}
+			<section className="relative py-20 px-8 md:px-6">
+				<div className="max-w-6xl mx-auto">
+					<motion.div
+						initial={{ opacity: 0, y: 20 }}
+						whileInView={{ opacity: 1, y: 0 }}
+						viewport={{ once: true }}
+						className="text-center mb-12"
+					>
+						<h2 className="text-4xl md:text-5xl font-bold gradient-text mb-4">
+							Featured Projects
+						</h2>
+						<p className="text-xl dark:text-gray-300 text-gray-700 font-mono">
+							Check out some of my recent work
+						</p>
+					</motion.div>
+
+					<div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+						{INFO.projects.slice(0, 6).map((project, index) => (
+							<ProjectCard key={project.id} project={project} index={index} />
+						))}
+					</div>
+
+					<motion.div
+						initial={{ opacity: 0 }}
+						whileInView={{ opacity: 1 }}
+						viewport={{ once: true }}
+						className="text-center mt-12"
+					>
+						<Link to="/projects">
+							<motion.button
+								whileHover={{ scale: 1.05 }}
+								whileTap={{ scale: 0.95 }}
+								className="px-8 py-4 glass-strong rounded-full font-mono font-bold text-white hover:bg-white/20 transition-all duration-300"
+							>
+								View All Projects →
+							</motion.button>
+						</Link>
+					</motion.div>
+				</div>
+			</section>
+		</div>
 	);
 };
 
