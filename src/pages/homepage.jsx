@@ -114,19 +114,19 @@ const Homepage = () => {
 								animate={{ opacity: 1, y: 0 }}
 								className="space-y-2"
 							>
-								<h2 className="text-2xl md:text-3xl font-mono dark:text-cyan-400 text-cyan-600">
+								<h2 className="text-2xl md:text-3xl font-mono dark:text-emerald-400 text-teal-600">
 									Hi, I'm
 								</h2>
 								<h1 className="text-5xl md:text-7xl font-bold gradient-text">
 									{INFO.main.name}
 								</h1>
 								<div className="h-16 md:h-20">
-									<h2 className="text-3xl md:text-4xl font-mono dark:text-purple-300 text-purple-600">
+									<h2 className="text-3xl md:text-4xl font-mono dark:text-lime-300 text-lime-600">
 										{displayedText}
 										<motion.span
 											animate={{ opacity: [1, 0, 1] }}
 											transition={{ duration: 0.8, repeat: Infinity }}
-											className="inline-block w-1 h-8 md:h-10 dark:bg-purple-400 bg-purple-600 ml-1"
+											className="inline-block w-1 h-8 md:h-10 dark:bg-lime-400 bg-lime-600 ml-1"
 										/>
 									</h2>
 								</div>
@@ -134,7 +134,7 @@ const Homepage = () => {
 
 							<motion.p
 								variants={itemVariants}
-								className="text-lg md:text-xl dark:text-gray-300 text-gray-700 leading-relaxed"
+								className="text-lg md:text-xl dark:text-gray-200 text-gray-800 leading-relaxed"
 							>
 								{INFO.homepage.description.substring(0, 200)}...
 							</motion.p>
@@ -142,10 +142,10 @@ const Homepage = () => {
 							{/* Social Icons */}
 							<motion.div variants={itemVariants} className="flex gap-4 pt-4">
 								{[
-									{ icon: faLinkedin, link: INFO.socials.linkedin, color: "hover:text-blue-400" },
-									{ icon: faInstagram, link: INFO.socials.instagram, color: "hover:text-pink-400" },
-									{ icon: faMailBulk, link: `mailto:${INFO.main.email}`, color: "hover:text-cyan-400" },
-									{ icon: faPhone, link: `tel:${INFO.main.phone}`, color: "hover:text-purple-400" },
+									{ icon: faLinkedin, link: INFO.socials.linkedin, color: "hover:text-emerald-400" },
+									{ icon: faInstagram, link: INFO.socials.instagram, color: "hover:text-amber-400" },
+									{ icon: faMailBulk, link: `mailto:${INFO.main.email}`, color: "hover:text-green-400" },
+									{ icon: faPhone, link: `tel:${INFO.main.phone}`, color: "hover:text-lime-400" },
 								].map((social, index) => (
 									<motion.a
 										key={index}
@@ -154,7 +154,7 @@ const Homepage = () => {
 										rel="noreferrer"
 										whileHover={{ scale: 1.2, rotate: 5 }}
 										whileTap={{ scale: 0.9 }}
-										className={`w-14 h-14 rounded-full glass flex items-center justify-center dark:text-gray-300 text-gray-700 ${social.color} transition-all duration-300`}
+										className={`w-14 h-14 rounded-full glass flex items-center justify-center dark:text-gray-200 text-gray-800 ${social.color} transition-all duration-300`}
 									>
 										<FontAwesomeIcon icon={social.icon} className="text-2xl" />
 									</motion.a>
@@ -167,7 +167,7 @@ const Homepage = () => {
 									<motion.button
 										whileHover={{ scale: 1.05 }}
 										whileTap={{ scale: 0.95 }}
-										className="px-8 py-4 bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 rounded-full font-mono font-bold text-white shadow-lg hover:shadow-xl transition-all duration-300"
+										className="px-8 py-4 bg-gradient-to-r from-teal-500 via-emerald-500 to-green-600 rounded-full font-mono font-bold text-white shadow-lg hover:shadow-xl transition-all duration-300"
 									>
 										View My Work
 									</motion.button>
@@ -176,7 +176,7 @@ const Homepage = () => {
 									<motion.button
 										whileHover={{ scale: 1.05 }}
 										whileTap={{ scale: 0.95 }}
-										className="px-8 py-4 glass-strong rounded-full font-mono font-bold text-white hover:bg-white/20 transition-all duration-300"
+										className="px-8 py-4 glass-strong rounded-full font-mono font-bold dark:text-white text-gray-900 hover:bg-white/20 transition-all duration-300"
 									>
 										Get In Touch
 									</motion.button>
@@ -200,7 +200,7 @@ const Homepage = () => {
 								}}
 								className="relative"
 							>
-								<div className="absolute inset-0 bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 rounded-3xl blur-2xl opacity-30 animate-pulse"></div>
+								<div className="absolute inset-0 bg-gradient-to-r from-emerald-400 via-green-400 to-teal-400 rounded-3xl blur-2xl opacity-30 animate-pulse"></div>
 								<div className="relative glass-strong rounded-3xl p-2 glow-effect">
 									<img
 										src="/homepage.jpeg"
@@ -241,7 +241,7 @@ const Homepage = () => {
 						<h2 className="text-4xl md:text-5xl font-bold gradient-text mb-4">
 							Featured Projects
 						</h2>
-						<p className="text-xl dark:text-gray-300 text-gray-700 font-mono">
+						<p className="text-xl dark:text-gray-200 text-gray-800 font-mono">
 							Check out some of my recent work
 						</p>
 					</motion.div>
@@ -262,7 +262,7 @@ const Homepage = () => {
 							<motion.button
 								whileHover={{ scale: 1.05 }}
 								whileTap={{ scale: 0.95 }}
-								className="px-8 py-4 glass-strong rounded-full font-mono font-bold text-white hover:bg-white/20 transition-all duration-300"
+								className="px-8 py-4 glass-strong rounded-full font-mono font-bold dark:text-white text-gray-900 hover:bg-white/20 transition-all duration-300"
 							>
 								View All Projects →
 							</motion.button>

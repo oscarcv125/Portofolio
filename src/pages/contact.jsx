@@ -24,28 +24,28 @@ const Contact = () => {
 			title: "Email",
 			value: INFO.main.email,
 			link: `mailto:${INFO.main.email}`,
-			color: "from-cyan-400 to-blue-400",
+			color: "from-emerald-400 to-green-400",
 		},
 		{
 			icon: faPhone,
 			title: "Phone",
 			value: INFO.main.phone,
 			link: `tel:${INFO.main.phone}`,
-			color: "from-purple-400 to-indigo-400",
+			color: "from-teal-400 to-emerald-400",
 		},
 		{
 			icon: faLinkedin,
 			title: "LinkedIn",
 			value: "Connect on LinkedIn",
 			link: INFO.socials.linkedin,
-			color: "from-blue-400 to-cyan-400",
+			color: "from-green-400 to-emerald-400",
 		},
 		{
 			icon: faInstagram,
 			title: "Instagram",
 			value: "@oscar_cardenasv",
 			link: INFO.socials.instagram,
-			color: "from-pink-400 to-rose-400",
+			color: "from-amber-400 to-orange-400",
 		},
 	];
 
@@ -71,7 +71,7 @@ const Contact = () => {
 						<h1 className="text-5xl md:text-6xl font-bold gradient-text mb-6">
 							Let's Connect
 						</h1>
-						<p className="text-xl text-gray-300 max-w-3xl mx-auto">
+						<p className="text-xl dark:text-gray-200 text-gray-800 max-w-3xl mx-auto">
 							Have a project in mind or just want to chat? I'd love to hear from you!
 						</p>
 					</motion.div>
@@ -88,7 +88,7 @@ const Contact = () => {
 								<h2 className="text-3xl font-bold gradient-text mb-6 font-mono">
 									Get in Touch
 								</h2>
-								<p className="text-gray-300 leading-relaxed mb-8">
+								<p className="dark:text-gray-200 text-gray-800 leading-relaxed mb-8">
 									I'm always open to discussing new projects, creative ideas, or opportunities to be part of your visions. Feel free to reach out through any of these channels!
 								</p>
 
@@ -112,15 +112,15 @@ const Contact = () => {
 												/>
 											</div>
 											<div className="flex-1">
-												<h3 className="text-white font-mono font-bold">
+												<h3 className="dark:text-white text-gray-900 font-mono font-bold">
 													{method.title}
 												</h3>
-												<p className="text-gray-400 text-sm">
+												<p className="dark:text-gray-400 text-gray-600 text-sm">
 													{method.value}
 												</p>
 											</div>
 											<motion.span
-												className="text-purple-400 opacity-0 group-hover:opacity-100 transition-opacity"
+												className="text-lime-400 opacity-0 group-hover:opacity-100 transition-opacity"
 											>
 												→
 											</motion.span>
@@ -136,11 +136,11 @@ const Contact = () => {
 								transition={{ delay: 0.8 }}
 								className="glass-strong rounded-2xl p-6"
 							>
-								<h3 className="text-xl font-bold text-white mb-3 font-mono">
+								<h3 className="text-xl font-bold dark:text-white text-gray-900 mb-3 font-mono">
 									Response Time
 								</h3>
-								<p className="text-gray-300">
-									I typically respond within <span className="text-cyan-400 font-bold">24 hours</span> during weekdays. For urgent matters, feel free to call!
+								<p className="dark:text-gray-200 text-gray-800">
+									I typically respond within <span className="dark:text-emerald-400 text-teal-700 font-bold">24 hours</span> during weekdays. For urgent matters, feel free to call!
 								</p>
 							</motion.div>
 						</motion.div>

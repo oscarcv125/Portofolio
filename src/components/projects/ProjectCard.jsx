@@ -70,7 +70,7 @@ const ProjectCard = ({ project, index }) => {
               animate={{
                 opacity: isHovered ? 0.1 : 0,
               }}
-              className="absolute inset-0 bg-gradient-to-br from-cyan-400 via-purple-400 to-pink-400 pointer-events-none"
+              className="absolute inset-0 bg-gradient-to-br from-teal-500 via-emerald-500 to-green-600 pointer-events-none"
             />
 
             {/* Glow effect */}
@@ -88,7 +88,7 @@ const ProjectCard = ({ project, index }) => {
                   rotate: isHovered ? 360 : 0,
                 }}
                 transition={{ duration: 0.6 }}
-                className="w-16 h-16 rounded-xl bg-gradient-to-br from-cyan-400/20 via-purple-400/20 to-pink-400/20 flex items-center justify-center backdrop-blur-sm"
+                className="w-16 h-16 rounded-xl bg-gradient-to-br from-teal-500/20 via-emerald-500/20 to-green-600/20 flex items-center justify-center backdrop-blur-sm"
               >
                 {project.logo ? (
                   <img
@@ -97,7 +97,7 @@ const ProjectCard = ({ project, index }) => {
                     className="w-10 h-10 object-contain"
                   />
                 ) : (
-                  <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-cyan-400 to-purple-400" />
+                  <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-teal-500 to-green-600" />
                 )}
               </motion.div>
             </div>
@@ -107,7 +107,7 @@ const ProjectCard = ({ project, index }) => {
               <h3 className="text-2xl font-bold dark:text-white text-gray-900 mb-2 font-mono group-hover:gradient-text transition-all duration-300">
                 {project.title}
               </h3>
-              <p className="dark:text-gray-300 text-gray-700 text-sm leading-relaxed flex-1 line-clamp-3">
+              <p className="dark:text-gray-200 text-gray-800 text-sm leading-relaxed flex-1 line-clamp-3">
                 {project.description}
               </p>
             </div>
@@ -116,7 +116,7 @@ const ProjectCard = ({ project, index }) => {
             <div className="relative z-10">
               <motion.div
                 whileHover={{ x: 5 }}
-                className="flex items-center dark:text-cyan-400 text-cyan-600 font-mono text-sm font-bold"
+                className="flex items-center dark:text-emerald-400 text-teal-700 font-mono text-sm font-bold"
               >
                 <span>{project.linkText || 'View Project'}</span>
                 <motion.span
@@ -131,8 +131,8 @@ const ProjectCard = ({ project, index }) => {
             </div>
 
             {/* Floating particles effect */}
-            <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/10 rounded-full blur-3xl pointer-events-none" />
-            <div className="absolute bottom-0 left-0 w-32 h-32 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute top-0 right-0 w-32 h-32 bg-green-500/10 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute bottom-0 left-0 w-32 h-32 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
           </motion.div>
         </motion.div>
       </Link>

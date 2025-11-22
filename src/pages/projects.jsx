@@ -21,14 +21,9 @@ const Projects = () => {
 		if (filter === "all") {
 			setFilteredProjects(INFO.projects);
 		} else {
-			// Simple filter by checking if description contains certain keywords
+			// Filter by checking if project has the selected tag
 			const filtered = INFO.projects.filter(project => {
-				const desc = project.description.toLowerCase();
-				if (filter === "ios") return desc.includes("ios") || desc.includes("swift");
-				if (filter === "ai") return desc.includes("ai") || desc.includes("ml") || desc.includes("intelligence");
-				if (filter === "web") return desc.includes("web") || desc.includes("react") || desc.includes("javascript");
-				if (filter === "python") return desc.includes("python") || desc.includes("data");
-				return true;
+				return project.tags && project.tags.includes(filter);
 			});
 			setFilteredProjects(filtered);
 		}
@@ -66,7 +61,7 @@ const Projects = () => {
 						<h1 className="text-5xl md:text-6xl font-bold gradient-text mb-6">
 							My Projects
 						</h1>
-						<p className="text-xl text-gray-300 max-w-3xl mx-auto mb-8">
+						<p className="text-xl dark:text-gray-200 text-gray-800 max-w-3xl mx-auto mb-8">
 							Things I've made trying to put my dent in the universe.
 						</p>
 
@@ -80,8 +75,8 @@ const Projects = () => {
 									whileTap={{ scale: 0.95 }}
 									className={`px-6 py-3 rounded-full font-mono font-bold transition-all duration-300 ${
 										filter === item.id
-											? "bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 text-white"
-											: "glass-strong text-gray-300 hover:text-white"
+											? "bg-gradient-to-r from-teal-500 via-emerald-500 to-green-600 text-white"
+											: "glass-strong dark:text-gray-200 text-gray-800 dark:hover:text-white hover:text-gray-900"
 									}`}
 								>
 									{item.label}
@@ -112,34 +107,6 @@ const Projects = () => {
 							</p>
 						</motion.div>
 					)}
-
-					{/* Stats */}
-					<motion.div
-						initial={{ opacity: 0, y: 50 }}
-						animate={{ opacity: 1, y: 0 }}
-						transition={{ delay: 0.5 }}
-						className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-20"
-					>
-						{[
-							{ number: INFO.projects.length, label: "Projects Completed" },
-							{ number: "3", label: "Hackathon Wins" },
-							{ number: "500+", label: "App Downloads" },
-							{ number: "96/100", label: "GPA" },
-						].map((stat, index) => (
-							<motion.div
-								key={index}
-								initial={{ opacity: 0, scale: 0.8 }}
-								animate={{ opacity: 1, scale: 1 }}
-								transition={{ delay: 0.6 + index * 0.1 }}
-								className="glass-strong rounded-2xl p-6 text-center"
-							>
-								<h3 className="text-4xl font-bold gradient-text mb-2 font-mono">
-									{stat.number}
-								</h3>
-								<p className="text-gray-400 text-sm">{stat.label}</p>
-							</motion.div>
-						))}
-					</motion.div>
 				</div>
 			</div>
 		</div>

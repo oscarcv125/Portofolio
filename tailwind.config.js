@@ -5,12 +5,12 @@ export default {
   theme: {
     extend: {
       colors: {
-        "gradient-start": "#667eea",
-        "gradient-mid": "#667eea",
-        "gradient-end": "#06b6d4",
-        "accent-cyan": "#06b6d4",
-        "accent-purple": "#06b6d4",
-        "accent-pink": "#667eea",
+        "gradient-start": "#2563eb",
+        "gradient-mid": "#4338ca",
+        "gradient-end": "#6b21a8",
+        "accent-blue": "#2563eb",
+        "accent-indigo": "#4338ca",
+        "accent-purple": "#6b21a8",
       },
       fontFamily: {
         mono: ['"JetBrains Mono"', '"Fira Code"', "monospace"],

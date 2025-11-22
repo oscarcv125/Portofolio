@@ -33,6 +33,7 @@ const INFO = {
 			logo: "https://cdn.jsdelivr.net/npm/programming-languages-logos/src/swift/swift.png",
 			linkText: "View Project",
 			link: "/project/kaapeh",
+			tags: ["ios", "web"],
 		},
 
 		{
@@ -43,6 +44,7 @@ const INFO = {
 			logo: "https://cdn.jsdelivr.net/npm/programming-languages-logos/src/python/python.png",
 			linkText: "View Project",
 			link: "/project/semex",
+			tags: ["python"],
 		},
 
 		{
@@ -53,6 +55,7 @@ const INFO = {
 			logo: "https://cdn.jsdelivr.net/npm/programming-languages-logos/src/swift/swift.png",
 			linkText: "View Project",
 			link: "/project/gategenie",
+			tags: ["ios", "ai", "web"],
 		},
 
 		{
@@ -63,6 +66,7 @@ const INFO = {
 			logo: "https://cdn.jsdelivr.net/npm/programming-languages-logos/src/swift/swift.png",
 			linkText: "View Project",
 			link: "/project/helpdoku",
+			tags: ["ios", "ai"],
 		},
 
 		{
@@ -73,6 +77,7 @@ const INFO = {
 			logo: "https://cdn.jsdelivr.net/npm/programming-languages-logos/src/swift/swift.png",
 			linkText: "View Project",
 			link: "/project/heatshield",
+			tags: ["ios"],
 		},
 
 		{
@@ -83,6 +88,7 @@ const INFO = {
 			logo: "https://cdn.jsdelivr.net/npm/programming-languages-logos/src/swift/swift.png",
 			linkText: "View Project",
 			link: "/project/wuno",
+			tags: ["ios", "ai"],
 		},
 
 		{
@@ -93,6 +99,7 @@ const INFO = {
 			logo: "https://cdn.jsdelivr.net/npm/programming-languages-logos/src/python/python.png",
 			linkText: "View Project",
 			link: "/project/credifiel",
+			tags: ["python", "ai"],
 		},
 
 		{
@@ -103,6 +110,7 @@ const INFO = {
 			logo: "https://cdn.jsdelivr.net/npm/programming-languages-logos/src/javascript/javascript.png",
 			linkText: "View Project",
 			link: "/project/awaq",
+			tags: ["web"],
 		},
 
 		{
@@ -113,6 +121,7 @@ const INFO = {
 			logo: "https://cdn.jsdelivr.net/npm/programming-languages-logos/src/javascript/javascript.png",
 			linkText: "View Project",
 			link: "/project/iberdrola",
+			tags: ["web"],
 		},
 	],
 };

@@ -108,7 +108,7 @@ const ImageCarousel = ({ images, autoPlayInterval = 4000 }) => {
       {/* Navigation Buttons */}
       <button
         onClick={handlePrev}
-        className="absolute left-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full glass-strong flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-110 z-10"
+        className="absolute left-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full glass-strong flex items-center justify-center dark:text-white text-gray-900 opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-110 z-10"
         aria-label="Previous image"
       >
         <FontAwesomeIcon icon={faChevronLeft} />
@@ -116,7 +116,7 @@ const ImageCarousel = ({ images, autoPlayInterval = 4000 }) => {
 
       <button
         onClick={handleNext}
-        className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full glass-strong flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-110 z-10"
+        className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full glass-strong flex items-center justify-center dark:text-white text-gray-900 opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-110 z-10"
         aria-label="Next image"
       >
         <FontAwesomeIcon icon={faChevronRight} />
@@ -130,8 +130,8 @@ const ImageCarousel = ({ images, autoPlayInterval = 4000 }) => {
             onClick={() => handleDotClick(index)}
             className={`transition-all duration-300 rounded-full ${
               index === currentIndex
-                ? 'w-8 h-2 bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400'
-                : 'w-2 h-2 bg-white/50 hover:bg-white/80'
+                ? 'w-8 h-2 bg-gradient-to-r from-teal-500 via-emerald-500 to-green-600'
+                : 'w-2 h-2 dark:bg-white/50 bg-gray-400/70 dark:hover:bg-white/80 hover:bg-gray-500/90'
             }`}
             aria-label={`Go to slide ${index + 1}`}
           />
@@ -139,7 +139,7 @@ const ImageCarousel = ({ images, autoPlayInterval = 4000 }) => {
       </div>
 
       {/* Image Counter */}
-      <div className="absolute top-4 right-4 px-3 py-1 rounded-full glass-strong text-white text-sm font-mono z-10">
+      <div className="absolute top-4 right-4 px-3 py-1 rounded-full glass-strong dark:text-white text-gray-900 text-sm font-mono z-10">
         {currentIndex + 1} / {images.length}
       </div>
     </div>

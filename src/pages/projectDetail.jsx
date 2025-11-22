@@ -156,12 +156,6 @@ class ExpiryViewModel: ObservableObject {
 }`,
 				},
 			],
-			images: [
-				"https://via.placeholder.com/800x600/3B82F6/FFFFFF?text=GateGenie+Dashboard",
-				"https://via.placeholder.com/800x600/10B981/FFFFFF?text=Expiration+Tracking",
-				"https://via.placeholder.com/800x600/8B5CF6/FFFFFF?text=AI+Scanner",
-				"https://via.placeholder.com/800x600/F59E0B/FFFFFF?text=Analytics+Charts",
-			],
 			videos: ["https://www.youtube.com/embed/0LKZbznRNo0"],
 		},
 		helpdoku: {
@@ -334,12 +328,6 @@ func isSolved() -> Bool {
     return true
 }`,
 				},
-			],
-			images: [
-				"https://via.placeholder.com/800x600/7C3AED/FFFFFF?text=HelpDoku+Board",
-				"https://via.placeholder.com/800x600/8B5CF6/FFFFFF?text=AI+Hints",
-				"https://via.placeholder.com/800x600/A78BFA/FFFFFF?text=iPad+Layout",
-				"https://via.placeholder.com/800x600/C4B5FD/FFFFFF?text=Validation",
 			],
 			videos: ["https://www.youtube.com/embed/DYGyn__TXXk"],
 		},
@@ -853,12 +841,6 @@ class TrafficController:
 				"Data visualization dashboards for strategy performance",
 			],
 			tech: ["Python", "Pandas", "NumPy", "Scikit-learn", "Matplotlib", "Seaborn", "SQL", "Jupyter"],
-			images: [
-				"https://via.placeholder.com/800x600/3498DB/FFFFFF?text=Data+Analysis",
-				"https://via.placeholder.com/800x600/2980B9/FFFFFF?text=Strategy+Performance",
-				"https://via.placeholder.com/800x600/5DADE2/FFFFFF?text=ML+Predictions",
-			],
-			videos: ["https://www.youtube.com/embed/dQw4w9WgXcQ"],
 		},
 		awaq: {
 			overview: `AWAQ is a comprehensive web platform designed to promote environmental preservation and social impact.
@@ -874,13 +856,6 @@ class TrafficController:
 				"Responsive design for accessibility across devices",
 			],
 			tech: ["React", "JavaScript", "Node.js", "Express", "MySQL", "Unity", "HTML", "CSS", "REST API"],
-			images: [
-				"https://via.placeholder.com/800x600/27AE60/FFFFFF?text=AWAQ+Platform",
-				"https://via.placeholder.com/800x600/229954/FFFFFF?text=Environmental+Dashboard",
-				"https://via.placeholder.com/800x600/1E8449/FFFFFF?text=Unity+Game",
-				"https://via.placeholder.com/800x600/196F3D/FFFFFF?text=Impact+Tracking",
-			],
-			videos: ["https://www.youtube.com/embed/dQw4w9WgXcQ"],
 		},
 		iberdrola: {
 			overview: `The Hackathon Iberdrola project focused on delivering affordable and sustainable energy to rural Oaxaca communities.
@@ -896,12 +871,6 @@ class TrafficController:
 				"Benefited over 4,500 residents in rural Oaxaca",
 			],
 			tech: ["React", "Node.js", "MongoDB", "IoT", "Solar Energy Systems", "Mobile Development", "Data Analytics"],
-			images: [
-				"https://via.placeholder.com/800x600/F39C12/FFFFFF?text=Solar+Infrastructure",
-				"https://via.placeholder.com/800x600/E67E22/FFFFFF?text=Community+Dashboard",
-				"https://via.placeholder.com/800x600/D68910/FFFFFF?text=Energy+Monitoring",
-			],
-			videos: ["https://www.youtube.com/embed/dQw4w9WgXcQ"],
 		},
 	};
 
@@ -931,23 +900,23 @@ class TrafficController:
 
 					<div className="project-detail-container">
 						<div className="project-detail-header">
-							<h1 className="project-detail-title">{project.title}</h1>
-							<p className="project-detail-subtitle">{project.description}</p>
+							<h1 className="project-detail-title dark:text-white text-gray-900">{project.title}</h1>
+							<p className="project-detail-subtitle dark:text-gray-200 text-gray-700">{project.description}</p>
 						</div>
 
 						{/* Overview Section */}
 						<section className="project-section">
-							<h2 className="section-title">Overview</h2>
-							<p className="section-content">{data.overview}</p>
+							<h2 className="section-title dark:text-white text-gray-900">Overview</h2>
+							<p className="section-content dark:text-gray-200 text-gray-700">{data.overview}</p>
 						</section>
 
 						{/* Features Section */}
 						{data.features && (
 							<section className="project-section">
-								<h2 className="section-title">Key Features</h2>
+								<h2 className="section-title dark:text-white text-gray-900">Key Features</h2>
 								<ul className="features-list">
 									{data.features.map((feature, index) => (
-										<li key={index} className="feature-item">
+										<li key={index} className="feature-item dark:text-gray-200 text-gray-700">
 											{feature}
 										</li>
 									))}
@@ -958,7 +927,7 @@ class TrafficController:
 						{/* Tech Stack Section */}
 						{data.tech && (
 							<section className="project-section">
-								<h2 className="section-title">Technology Stack</h2>
+								<h2 className="section-title dark:text-white text-gray-900">Technology Stack</h2>
 								<div className="tech-stack">
 									{data.tech.map((tech, index) => (
 										<span key={index} className="tech-badge">
@@ -972,10 +941,10 @@ class TrafficController:
 						{/* Code Snippets Section */}
 						{data.codeSnippets && (
 							<section className="project-section">
-								<h2 className="section-title">Code Highlights</h2>
+								<h2 className="section-title dark:text-white text-gray-900">Code Highlights</h2>
 								{data.codeSnippets.map((snippet, index) => (
 									<div key={index} className="code-snippet-container">
-										<h3 className="code-snippet-title">{snippet.title}</h3>
+										<h3 className="code-snippet-title dark:text-white text-gray-900">{snippet.title}</h3>
 										<div className="code-snippet">
 											<pre>
 												<code className={`language-${snippet.language}`}>
@@ -991,7 +960,7 @@ class TrafficController:
 						{/* Screenshots Section */}
 						{data.images && (
 							<section className="project-section">
-								<h2 className="section-title">Screenshots</h2>
+								<h2 className="section-title dark:text-white text-gray-900">Screenshots</h2>
 								<div className="screenshots-grid">
 									{data.images.map((image, index) => (
 										<div key={index} className="screenshot-item">
@@ -1009,7 +978,7 @@ class TrafficController:
 						{/* Videos Section */}
 						{data.videos && (
 							<section className="project-section">
-								<h2 className="section-title">Demo Videos</h2>
+								<h2 className="section-title dark:text-white text-gray-900">Demo Videos</h2>
 								<div className="videos-container">
 									{data.videos.map((video, index) => (
 										<div key={index} className="video-wrapper">
@@ -1042,7 +1011,7 @@ class TrafficController:
 						{/* QR Code Section */}
 						{data.qrCode && (
 							<section className="project-section">
-								<h2 className="section-title">Try Me!</h2>
+								<h2 className="section-title dark:text-white text-gray-900">Try Me!</h2>
 								<div className="qr-code-container">
 									<p className="qr-code-description">
 										Scan the QR code below to access the web app

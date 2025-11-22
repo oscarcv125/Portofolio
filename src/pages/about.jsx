@@ -7,7 +7,6 @@ import { faMailBulk, faPhone, faAward, faCode, faBriefcase, faGraduationCap } fr
 
 import NavBar from "../components/common/navBar";
 import ParticlesBackground from "../components/common/ParticlesBackground";
-import ImageCarousel from "../components/common/ImageCarousel";
 
 import INFO from "../data/user";
 import SEO from "../data/seo";
@@ -19,23 +18,22 @@ const About = () => {
 
 	const currentSEO = SEO.find((item) => item.page === "about");
 
-	// Carousel images
-	const carouselImages = [
-		'/carrousel/carr1.jpg',
-		'/carrousel/carr2.jpg',
-		'/carrousel/carr3.jpg',
-		'/carrousel/carr4.jpg',
-		'/carrousel/carr5.jpg',
-		'/carrousel/carr6.jpg',
+	const placeholderColors = [
+		"bg-gradient-to-br from-emerald-400 to-emerald-600",
+		"bg-gradient-to-br from-green-400 to-green-600",
+		"bg-gradient-to-br from-amber-400 to-amber-600",
+		"bg-gradient-to-br from-lime-400 to-lime-600",
+		"bg-gradient-to-br from-teal-400 to-teal-600",
+		"bg-gradient-to-br from-yellow-400 to-yellow-600",
 	];
 
 	const skills = [
-		{ name: "Swift/SwiftUI", level: 95, color: "from-cyan-400 to-blue-400" },
-		{ name: "Python", level: 90, color: "from-purple-400 to-indigo-400" },
-		{ name: "React/JavaScript", level: 85, color: "from-pink-400 to-rose-400" },
-		{ name: "C++", level: 80, color: "from-cyan-400 to-teal-400" },
-		{ name: "AI/ML", level: 75, color: "from-purple-400 to-fuchsia-400" },
-		{ name: "Full-Stack Dev", level: 85, color: "from-pink-400 to-orange-400" },
+		{ name: "Swift/SwiftUI", level: 95, color: "from-emerald-400 to-green-400" },
+		{ name: "Python", level: 90, color: "from-green-400 to-lime-400" },
+		{ name: "React/JavaScript", level: 85, color: "from-amber-400 to-orange-400" },
+		{ name: "C++", level: 80, color: "from-teal-400 to-emerald-400" },
+		{ name: "AI/ML", level: 75, color: "from-lime-400 to-green-400" },
+		{ name: "Full-Stack Dev", level: 85, color: "from-yellow-400 to-amber-400" },
 	];
 
 	const achievements = [
@@ -67,7 +65,7 @@ const About = () => {
 						<h1 className="text-5xl md:text-6xl font-bold gradient-text mb-6">
 							About Me
 						</h1>
-						<p className="text-xl text-gray-300 max-w-3xl mx-auto">
+						<p className="text-xl dark:text-gray-200 text-gray-800 max-w-3xl mx-auto">
 							{INFO.about.title}
 						</p>
 					</motion.div>
@@ -81,23 +79,35 @@ const About = () => {
 							transition={{ delay: 0.2 }}
 							className="space-y-8"
 						>
-							<div className="glass-strong rounded-3xl p-2 glow-effect">
-								<div className="w-full h-96 rounded-2xl overflow-hidden">
-									<ImageCarousel images={carouselImages} autoPlayInterval={4000} />
+							<div className="glass-strong rounded-3xl p-6 glow-effect">
+								<div className="grid grid-cols-2 gap-4">
+									{placeholderColors.map((color, index) => (
+										<motion.div
+											key={index}
+											initial={{ opacity: 0, scale: 0.8 }}
+											animate={{ opacity: 1, scale: 1 }}
+											transition={{ delay: 0.3 + index * 0.1 }}
+											className={`${color} rounded-xl h-32 flex items-center justify-center`}
+										>
+											<span className="text-white font-bold text-xl font-mono">
+												Photo {index + 1}
+											</span>
+										</motion.div>
+									))}
 								</div>
 							</div>
 
 							{/* Social Links */}
 							<div className="glass-strong rounded-2xl p-6">
-								<h3 className="text-2xl font-bold text-white mb-4 font-mono">
+								<h3 className="text-2xl font-bold dark:text-white text-gray-900 mb-4 font-mono">
 									Let's Connect
 								</h3>
 								<div className="grid grid-cols-2 gap-4">
 									{[
-										{ icon: faLinkedin, link: INFO.socials.linkedin, label: "LinkedIn", color: "hover:text-blue-400" },
-										{ icon: faInstagram, link: INFO.socials.instagram, label: "Instagram", color: "hover:text-pink-400" },
-										{ icon: faMailBulk, link: `mailto:${INFO.main.email}`, label: "Email", color: "hover:text-cyan-400" },
-										{ icon: faPhone, link: `tel:${INFO.main.phone}`, label: "Phone", color: "hover:text-purple-400" },
+										{ icon: faLinkedin, link: INFO.socials.linkedin, label: "LinkedIn", color: "hover:text-emerald-400" },
+										{ icon: faInstagram, link: INFO.socials.instagram, label: "Instagram", color: "hover:text-amber-400" },
+										{ icon: faMailBulk, link: `mailto:${INFO.main.email}`, label: "Email", color: "hover:text-green-400" },
+										{ icon: faPhone, link: `tel:${INFO.main.phone}`, label: "Phone", color: "hover:text-lime-400" },
 									].map((social, index) => (
 										<motion.a
 											key={index}
@@ -106,7 +116,7 @@ const About = () => {
 											rel="noreferrer"
 											whileHover={{ scale: 1.05 }}
 											whileTap={{ scale: 0.95 }}
-											className={`flex items-center gap-3 px-4 py-3 rounded-lg glass hover:glass-strong transition-all ${social.color}`}
+											className={`flex items-center gap-3 px-4 py-3 rounded-lg glass hover:glass-strong transition-all dark:text-gray-200 text-gray-800 ${social.color}`}
 										>
 											<FontAwesomeIcon icon={social.icon} className="text-xl" />
 											<span className="font-mono text-sm">{social.label}</span>
@@ -127,7 +137,7 @@ const About = () => {
 								<h2 className="text-3xl font-bold gradient-text mb-4 font-mono">
 									My Story
 								</h2>
-								<p className="text-gray-300 leading-relaxed text-lg">
+								<p className="dark:text-gray-200 text-gray-800 leading-relaxed text-lg">
 									{INFO.about.description}
 								</p>
 							</div>
@@ -147,10 +157,10 @@ const About = () => {
 											icon={achievement.icon}
 											className="text-3xl gradient-text mb-2"
 										/>
-										<h4 className="text-white font-bold mb-1 font-mono text-sm">
+										<h4 className="dark:text-white text-gray-900 font-bold mb-1 font-mono text-sm">
 											{achievement.title}
 										</h4>
-										<p className="text-gray-400 text-xs">{achievement.desc}</p>
+										<p className="dark:text-gray-400 text-gray-600 text-xs">{achievement.desc}</p>
 									</motion.div>
 								))}
 							</div>
@@ -176,10 +186,10 @@ const About = () => {
 									transition={{ delay: 0.6 + index * 0.1 }}
 								>
 									<div className="flex justify-between mb-2">
-										<span className="text-white font-mono font-bold">{skill.name}</span>
-										<span className="text-gray-400 font-mono">{skill.level}%</span>
+										<span className="dark:text-white text-gray-900 font-mono font-bold">{skill.name}</span>
+										<span className="dark:text-gray-400 text-gray-600 font-mono">{skill.level}%</span>
 									</div>
-									<div className="h-3 bg-gray-800 rounded-full overflow-hidden">
+									<div className="h-3 dark:bg-gray-800 bg-gray-400 rounded-full overflow-hidden">
 										<motion.div
 											initial={{ width: 0 }}
 											animate={{ width: `${skill.level}%` }}

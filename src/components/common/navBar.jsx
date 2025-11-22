@@ -55,7 +55,7 @@ const NavBar = () => {
                 <motion.div
                   whileHover={{ rotate: 360 }}
                   transition={{ duration: 0.6 }}
-                  className="w-10 h-10 rounded-full bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 flex items-center justify-center font-mono font-bold text-white text-xs"
+                  className="w-10 h-10 rounded-full bg-gradient-to-r from-teal-500 via-emerald-500 to-green-600 flex items-center justify-center font-mono font-bold text-white text-xs"
                 >
                   OCV
                 </motion.div>
@@ -75,8 +75,8 @@ const NavBar = () => {
                           whileTap={{ scale: 0.95 }}
                           className={`px-6 py-2 rounded-full font-mono text-sm transition-all duration-300 ${
                             isActive(item.path)
-                              ? "bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 text-white"
-                              : "dark:text-gray-300 text-gray-700 dark:hover:text-white hover:text-gray-900 hover:bg-white/10"
+                              ? "bg-gradient-to-r from-teal-500 via-emerald-500 to-green-600 text-white"
+                              : "dark:text-gray-200 text-gray-800 dark:hover:text-white hover:text-gray-900 hover:bg-white/10"
                           }`}
                         >
                           {item.name}
@@ -91,7 +91,7 @@ const NavBar = () => {
                   onClick={toggleTheme}
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
-                  className="w-10 h-10 rounded-full glass flex items-center justify-center dark:text-gray-300 text-gray-700 dark:hover:text-white hover:text-gray-900 transition-colors"
+                  className="w-10 h-10 rounded-full glass flex items-center justify-center dark:text-gray-200 text-gray-700 dark:hover:text-white hover:text-gray-900 transition-colors"
                   aria-label="Toggle theme"
                 >
                   <FontAwesomeIcon icon={theme === 'dark' ? faSun : faMoon} />
@@ -106,15 +106,15 @@ const NavBar = () => {
               >
                 <motion.span
                   animate={isOpen ? { rotate: 45, y: 8 } : { rotate: 0, y: 0 }}
-                  className="w-6 h-0.5 dark:bg-white bg-gray-700 rounded-full transition-all group-hover:bg-cyan-400"
+                  className="w-6 h-0.5 dark:bg-white bg-gray-700 rounded-full transition-all group-hover:bg-emerald-400"
                 />
                 <motion.span
                   animate={isOpen ? { opacity: 0 } : { opacity: 1 }}
-                  className="w-6 h-0.5 dark:bg-white bg-gray-700 rounded-full transition-all group-hover:bg-purple-400"
+                  className="w-6 h-0.5 dark:bg-white bg-gray-700 rounded-full transition-all group-hover:bg-lime-400"
                 />
                 <motion.span
                   animate={isOpen ? { rotate: -45, y: -8 } : { rotate: 0, y: 0 }}
-                  className="w-6 h-0.5 dark:bg-white bg-gray-700 rounded-full transition-all group-hover:bg-pink-400"
+                  className="w-6 h-0.5 dark:bg-white bg-gray-700 rounded-full transition-all group-hover:bg-amber-400"
                 />
               </button>
             </div>
@@ -157,8 +157,8 @@ const NavBar = () => {
                           whileTap={{ scale: 0.95 }}
                           className={`px-6 py-3 rounded-lg font-mono text-lg transition-all duration-300 ${
                             isActive(item.path)
-                              ? "bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 text-white"
-                              : "dark:text-gray-300 text-gray-700 dark:hover:text-white hover:text-gray-900 hover:bg-white/10"
+                              ? "bg-gradient-to-r from-teal-500 via-emerald-500 to-green-600 text-white"
+                              : "dark:text-gray-200 text-gray-800 dark:hover:text-white hover:text-gray-900 hover:bg-white/10"
                           }`}
                         >
                           {item.name}
@@ -174,19 +174,19 @@ const NavBar = () => {
                   <motion.button
                     onClick={toggleTheme}
                     whileTap={{ scale: 0.95 }}
-                    className="w-full px-6 py-3 rounded-lg glass flex items-center justify-center gap-3 font-mono dark:text-gray-300 text-gray-700"
+                    className="w-full px-6 py-3 rounded-lg glass flex items-center justify-center gap-3 font-mono dark:text-gray-200 text-gray-700"
                   >
                     <FontAwesomeIcon icon={theme === 'dark' ? faSun : faMoon} />
                     <span>{theme === 'dark' ? 'Light Mode' : 'Dark Mode'}</span>
                   </motion.button>
 
-                  <div className="h-px bg-gradient-to-r from-transparent dark:via-white/20 via-gray-300 to-transparent" />
+                  <div className="h-px bg-gradient-to-r from-transparent dark:via-white/20 via-gray-400 to-transparent" />
                   <p className="text-center text-sm dark:text-gray-400 text-gray-600 font-mono">
                     Made with
                     <motion.span
                       animate={{ scale: [1, 1.2, 1] }}
                       transition={{ repeat: Infinity, duration: 1.5 }}
-                      className="inline-block mx-1 text-pink-400"
+                      className="inline-block mx-1 text-amber-400"
                     >
                       ♥
                     </motion.span>
