@@ -1,207 +1,170 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { Helmet } from "react-helmet";
-import { motion } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faLinkedin, faInstagram, faGithub } from "@fortawesome/free-brands-svg-icons";
+import { faLinkedin, faInstagram } from "@fortawesome/free-brands-svg-icons";
 import { faMailBulk, faPhone, faAward, faCode, faBriefcase, faGraduationCap } from "@fortawesome/free-solid-svg-icons";
+import anime from "animejs";
 
 import NavBar from "../components/common/navBar";
-import ParticlesBackground from "../components/common/ParticlesBackground";
 
 import INFO from "../data/user";
 import SEO from "../data/seo";
 
 const About = () => {
+	const headerRef = useRef(null);
+	const contentRef = useRef(null);
+	const skillsRef = useRef(null);
+
 	useEffect(() => {
 		window.scrollTo(0, 0);
+
+		// Minimalist entrance animations
+		anime({
+			targets: [headerRef.current, contentRef.current, skillsRef.current],
+			translateY: [50, 0],
+			opacity: [0, 1],
+			duration: 1000,
+			easing: 'easeOutQuart',
+			delay: anime.stagger(200, {start: 300})
+		});
 	}, []);
 
 	const currentSEO = SEO.find((item) => item.page === "about");
 
-	const placeholderColors = [
-		"bg-gradient-to-br from-emerald-400 to-emerald-600",
-		"bg-gradient-to-br from-green-400 to-green-600",
-		"bg-gradient-to-br from-amber-400 to-amber-600",
-		"bg-gradient-to-br from-lime-400 to-lime-600",
-		"bg-gradient-to-br from-teal-400 to-teal-600",
-		"bg-gradient-to-br from-yellow-400 to-yellow-600",
-	];
-
 	const skills = [
-		{ name: "Swift/SwiftUI", level: 95, color: "from-emerald-400 to-green-400" },
-		{ name: "Python", level: 90, color: "from-green-400 to-lime-400" },
-		{ name: "React/JavaScript", level: 85, color: "from-amber-400 to-orange-400" },
-		{ name: "C++", level: 80, color: "from-teal-400 to-emerald-400" },
-		{ name: "AI/ML", level: 75, color: "from-lime-400 to-green-400" },
-		{ name: "Full-Stack Dev", level: 85, color: "from-yellow-400 to-amber-400" },
+		{ name: "Swift/SwiftUI", level: 95 },
+		{ name: "Python", level: 90 },
+		{ name: "React/JavaScript", level: 85 },
+		{ name: "C++", level: 80 },
+		{ name: "AI/ML", level: 75 },
+		{ name: "Full-Stack Dev", level: 85 },
 	];
 
 	const achievements = [
-		{ icon: faAward, title: "1st Place", desc: "Swift Challenge Fest - HeatShield App" },
+		{ icon: faAward, title: "1st Place", desc: "Swift Challenge Fest 2026 - claRity App" },
+		{ icon: faAward, title: "1st Place", desc: "Swift Challenge Fest 2025 - HeatShield App" },
 		{ icon: faAward, title: "2nd Place", desc: "Credifiel Datathon - Credit Recovery Optimization" },
 		{ icon: faAward, title: "3rd Place", desc: "Hackathon Iberdrola - Environmental Tech" },
-		{ icon: faGraduationCap, title: "96/100 GPA", desc: "Academic Excellence Scholarship" },
+		{ icon: faGraduationCap, title: "Scholarship", desc: "50% Academic Excellence Scholarship at Tecnologico de Monterrey Campus Monterrey" },
 	];
 
 	return (
-		<div className="min-h-screen overflow-hidden">
+		<div className="min-h-screen overflow-hidden dark:bg-[#050505] bg-[#fafafa]">
 			<Helmet>
 				<title>{`About | ${INFO.main.title}`}</title>
 				<meta name="description" content={currentSEO?.description || ""} />
 				<meta name="keywords" content={currentSEO?.keywords.join(", ") || ""} />
 			</Helmet>
 
-			<ParticlesBackground />
 			<NavBar />
 
-			<div className="relative px-8 md:px-6 pt-32 pb-20">
-				<div className="max-w-6xl mx-auto">
-					{/* Header */}
-					<motion.div
-						initial={{ opacity: 0, y: 20 }}
-						animate={{ opacity: 1, y: 0 }}
-						className="text-center mb-16"
-					>
-						<h1 className="text-5xl md:text-6xl font-bold gradient-text mb-6">
-							About Me
-						</h1>
-						<p className="text-xl dark:text-gray-200 text-gray-800 max-w-3xl mx-auto">
-							{INFO.about.title}
-						</p>
-					</motion.div>
+			<div className="relative px-8 md:px-12 pt-40 pb-20 max-w-7xl mx-auto">
+				
+				{/* Header */}
+				<div ref={headerRef} className="opacity-0 mb-20 border-b border-editorial pb-12">
+					<h1 className="text-6xl md:text-8xl font-bold font-serif mb-6 text-black dark:text-white">
+						My Story.
+					</h1>
+					<p className="text-xl md:text-2xl font-light text-gray-600 dark:text-gray-400 max-w-3xl leading-relaxed">
+						{INFO.about.title}
+					</p>
+				</div>
 
-					{/* Main Content Grid */}
-					<div className="grid md:grid-cols-2 gap-12 mb-20">
-						{/* Left - Image & Quick Info */}
-						<motion.div
-							initial={{ opacity: 0, x: -50 }}
-							animate={{ opacity: 1, x: 0 }}
-							transition={{ delay: 0.2 }}
-							className="space-y-8"
-						>
-							<div className="glass-strong rounded-3xl p-6 glow-effect">
-								<div className="grid grid-cols-2 gap-4">
-									{placeholderColors.map((color, index) => (
-										<motion.div
-											key={index}
-											initial={{ opacity: 0, scale: 0.8 }}
-											animate={{ opacity: 1, scale: 1 }}
-											transition={{ delay: 0.3 + index * 0.1 }}
-											className={`${color} rounded-xl h-32 flex items-center justify-center`}
-										>
-											<span className="text-white font-bold text-xl font-mono">
-												Photo {index + 1}
-											</span>
-										</motion.div>
-									))}
-								</div>
-							</div>
+				{/* Main Content Grid */}
+				<div ref={contentRef} className="opacity-0 grid lg:grid-cols-12 gap-16 mb-32">
+					
+					{/* Left Col - Text & Achievements */}
+					<div className="lg:col-span-8 space-y-16">
+						<div className="prose prose-lg dark:prose-invert max-w-none">
+							<p className="text-lg md:text-xl font-light leading-relaxed text-gray-800 dark:text-gray-200">
+								{INFO.about.description}
+							</p>
+						</div>
 
-							{/* Social Links */}
-							<div className="glass-strong rounded-2xl p-6">
-								<h3 className="text-2xl font-bold dark:text-white text-gray-900 mb-4 font-mono">
-									Let's Connect
-								</h3>
-								<div className="grid grid-cols-2 gap-4">
-									{[
-										{ icon: faLinkedin, link: INFO.socials.linkedin, label: "LinkedIn", color: "hover:text-emerald-400" },
-										{ icon: faInstagram, link: INFO.socials.instagram, label: "Instagram", color: "hover:text-amber-400" },
-										{ icon: faMailBulk, link: `mailto:${INFO.main.email}`, label: "Email", color: "hover:text-green-400" },
-										{ icon: faPhone, link: `tel:${INFO.main.phone}`, label: "Phone", color: "hover:text-lime-400" },
-									].map((social, index) => (
-										<motion.a
-											key={index}
-											href={social.link}
-											target="_blank"
-											rel="noreferrer"
-											whileHover={{ scale: 1.05 }}
-											whileTap={{ scale: 0.95 }}
-											className={`flex items-center gap-3 px-4 py-3 rounded-lg glass hover:glass-strong transition-all dark:text-gray-200 text-gray-800 ${social.color}`}
-										>
-											<FontAwesomeIcon icon={social.icon} className="text-xl" />
-											<span className="font-mono text-sm">{social.label}</span>
-										</motion.a>
-									))}
-								</div>
-							</div>
-						</motion.div>
-
-						{/* Right - About Text */}
-						<motion.div
-							initial={{ opacity: 0, x: 50 }}
-							animate={{ opacity: 1, x: 0 }}
-							transition={{ delay: 0.3 }}
-							className="space-y-6"
-						>
-							<div className="glass-strong rounded-2xl p-8">
-								<h2 className="text-3xl font-bold gradient-text mb-4 font-mono">
-									My Story
-								</h2>
-								<p className="dark:text-gray-200 text-gray-800 leading-relaxed text-lg">
-									{INFO.about.description}
-								</p>
-							</div>
-
-							{/* Achievements Grid */}
-							<div className="grid grid-cols-2 gap-4">
+						{/* Achievements */}
+						<div>
+							<h3 className="text-sm font-bold tracking-widest uppercase text-accent mb-8">
+								Milestones & Awards
+							</h3>
+							<div className="grid sm:grid-cols-2 gap-8">
 								{achievements.map((achievement, index) => (
-									<motion.div
-										key={index}
-										initial={{ opacity: 0, scale: 0.8 }}
-										animate={{ opacity: 1, scale: 1 }}
-										transition={{ delay: 0.4 + index * 0.1 }}
-										whileHover={{ scale: 1.05 }}
-										className="glass-strong rounded-xl p-4 text-center"
-									>
-										<FontAwesomeIcon
-											icon={achievement.icon}
-											className="text-3xl gradient-text mb-2"
-										/>
-										<h4 className="dark:text-white text-gray-900 font-bold mb-1 font-mono text-sm">
+									<div key={index} className="border-l-2 border-accent pl-6 py-2">
+										<FontAwesomeIcon icon={achievement.icon} className="text-2xl text-black dark:text-white mb-4" />
+										<h4 className="text-lg font-bold font-serif text-black dark:text-white mb-2">
 											{achievement.title}
 										</h4>
-										<p className="dark:text-gray-400 text-gray-600 text-xs">{achievement.desc}</p>
-									</motion.div>
+										<p className="text-sm text-gray-600 dark:text-gray-400">
+											{achievement.desc}
+										</p>
+									</div>
 								))}
 							</div>
-						</motion.div>
+						</div>
 					</div>
 
-					{/* Skills Section */}
-					<motion.div
-						initial={{ opacity: 0, y: 50 }}
-						animate={{ opacity: 1, y: 0 }}
-						transition={{ delay: 0.5 }}
-						className="glass-strong rounded-3xl p-8 md:p-12"
-					>
-						<h2 className="text-4xl font-bold gradient-text mb-8 text-center font-mono">
-							Technical Skills
-						</h2>
-						<div className="grid md:grid-cols-2 gap-6">
+					{/* Right Col - Contact & Socials */}
+					<div className="lg:col-span-4">
+						<div className="sticky top-40 border border-editorial bg-white dark:bg-[#0a0a0a] p-8 shadow-editorial">
+							<h3 className="text-2xl font-bold font-serif mb-8 text-black dark:text-white">
+								Let's Connect
+							</h3>
+							<div className="flex flex-col space-y-6">
+								{[
+									{ icon: faLinkedin, link: INFO.socials.linkedin, label: "LinkedIn" },
+									{ icon: faInstagram, link: INFO.socials.instagram, label: "Instagram" },
+									{ icon: faMailBulk, link: `mailto:${INFO.main.email}`, label: "Email" },
+									{ icon: faPhone, link: `tel:${INFO.main.phone}`, label: "Phone" },
+								].map((social, index) => (
+									<a
+										key={index}
+										href={social.link}
+										target="_blank"
+										rel="noreferrer"
+										className="group flex items-center gap-4 text-gray-600 dark:text-gray-400 hover:text-accent dark:hover:text-accent transition-colors duration-300"
+									>
+										<span className="w-10 h-10 flex items-center justify-center border border-editorial rounded-full group-hover:border-accent transition-colors duration-300 text-black dark:text-white group-hover:text-accent">
+											<FontAwesomeIcon icon={social.icon} />
+										</span>
+										<span className="text-sm font-bold tracking-widest uppercase">{social.label}</span>
+									</a>
+								))}
+							</div>
+						</div>
+					</div>
+				</div>
+
+				{/* Skills Section */}
+				<div ref={skillsRef} className="opacity-0 border-t border-editorial pt-20">
+					<div className="grid md:grid-cols-3 gap-12">
+						<div className="md:col-span-1">
+							<h2 className="text-4xl md:text-5xl font-bold font-serif text-black dark:text-white mb-4">
+								Core<br/>Expertise
+							</h2>
+							<p className="text-gray-600 dark:text-gray-400 text-sm tracking-widest uppercase">
+								Technical Skills
+							</p>
+						</div>
+						<div className="md:col-span-2 grid sm:grid-cols-2 gap-x-12 gap-y-10">
 							{skills.map((skill, index) => (
-								<motion.div
-									key={index}
-									initial={{ opacity: 0, x: -20 }}
-									animate={{ opacity: 1, x: 0 }}
-									transition={{ delay: 0.6 + index * 0.1 }}
-								>
-									<div className="flex justify-between mb-2">
-										<span className="dark:text-white text-gray-900 font-mono font-bold">{skill.name}</span>
-										<span className="dark:text-gray-400 text-gray-600 font-mono">{skill.level}%</span>
+								<div key={index} className="group">
+									<div className="flex justify-between items-end mb-4 border-b border-editorial pb-2">
+										<span className="text-lg font-bold text-black dark:text-white">{skill.name}</span>
+										<span className="text-sm font-mono text-accent">{skill.level}%</span>
 									</div>
-									<div className="h-3 dark:bg-gray-800 bg-gray-400 rounded-full overflow-hidden">
-										<motion.div
-											initial={{ width: 0 }}
-											animate={{ width: `${skill.level}%` }}
-											transition={{ delay: 0.8 + index * 0.1, duration: 1, ease: "easeOut" }}
-											className={`h-full bg-gradient-to-r ${skill.color} rounded-full`}
+									<div className="h-1 bg-gray-200 dark:bg-gray-800 w-full overflow-hidden">
+										<div 
+											className="h-full bg-black dark:bg-white transform -translate-x-full transition-transform duration-1000 ease-out"
+											style={{
+												transform: `translateX(-${100 - skill.level}%)`
+											}}
 										/>
 									</div>
-								</motion.div>
+								</div>
 							))}
 						</div>
-					</motion.div>
+					</div>
 				</div>
+
 			</div>
 		</div>
 	);

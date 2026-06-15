@@ -56,7 +56,7 @@ const ParticlesBackground = () => {
 
     // Create particles
     const createParticles = () => {
-      const numberOfParticles = Math.min(100, Math.floor(canvas.width / 20));
+      const numberOfParticles = Math.min(60, Math.floor(canvas.width / 28));
       particles = [];
       for (let i = 0; i < numberOfParticles; i++) {
         particles.push(new Particle());
@@ -64,11 +64,24 @@ const ParticlesBackground = () => {
     };
     createParticles();
 
-    // Animation loop
+    let isScrolling = false;
+    let scrollTimeout;
+
+    const handleScroll = () => {
+      isScrolling = true;
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => { isScrolling = false; }, 200);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    // Animation loop — skips frames while user is scrolling
     const animate = () => {
+      animationFrameId = requestAnimationFrame(animate);
+
+      if (isScrolling) return;
+
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Draw connections between nearby particles
       particles.forEach((particle, i) => {
         particle.update();
         particle.draw();
@@ -76,9 +89,10 @@ const ParticlesBackground = () => {
         particles.slice(i + 1).forEach((otherParticle) => {
           const dx = particle.x - otherParticle.x;
           const dy = particle.y - otherParticle.y;
-          const distance = Math.sqrt(dx * dx + dy * dy);
+          const distSq = dx * dx + dy * dy;
 
-          if (distance < 100) {
+          if (distSq < 10000) {
+            const distance = Math.sqrt(distSq);
             const lineColor = theme === 'dark'
               ? `rgba(0, 200, 255, ${0.15 * (1 - distance / 100)})`
               : `rgba(100, 120, 150, ${0.06 * (1 - distance / 100)})`;
@@ -91,13 +105,13 @@ const ParticlesBackground = () => {
           }
         });
       });
-
-      animationFrameId = requestAnimationFrame(animate);
     };
     animate();
 
     return () => {
       window.removeEventListener('resize', setCanvasSize);
+      window.removeEventListener('scroll', handleScroll);
+      clearTimeout(scrollTimeout);
       cancelAnimationFrame(animationFrameId);
     };
   }, [theme]);

@@ -1,142 +1,119 @@
-import React, { useRef, useState } from 'react';
-import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
+import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
+import anime from 'animejs';
 
 const ProjectCard = ({ project, index }) => {
   const cardRef = useRef(null);
-  const [isHovered, setIsHovered] = useState(false);
+  const imageRef = useRef(null);
 
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-
-  const mouseXSpring = useSpring(x);
-  const mouseYSpring = useSpring(y);
-
-  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ['7.5deg', '-7.5deg']);
-  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ['-7.5deg', '7.5deg']);
-
-  const handleMouseMove = (e) => {
-    if (!cardRef.current) return;
-
-    const rect = cardRef.current.getBoundingClientRect();
-    const width = rect.width;
-    const height = rect.height;
-
-    const mouseX = e.clientX - rect.left;
-    const mouseY = e.clientY - rect.top;
-
-    const xPct = mouseX / width - 0.5;
-    const yPct = mouseY / height - 0.5;
-
-    x.set(xPct);
-    y.set(yPct);
+  const handleMouseEnter = () => {
+    anime({
+      targets: imageRef.current,
+      scale: 1.05,
+      duration: 800,
+      easing: 'easeOutQuint'
+    });
   };
 
   const handleMouseLeave = () => {
-    x.set(0);
-    y.set(0);
-    setIsHovered(false);
+    anime({
+      targets: imageRef.current,
+      scale: 1,
+      duration: 800,
+      easing: 'easeOutQuint'
+    });
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 50 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay: index * 0.1 }}
+    <div 
+      className="group relative"
+      ref={cardRef}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
-      <Link to={project.link}>
-        <motion.div
-          ref={cardRef}
-          onMouseMove={handleMouseMove}
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={handleMouseLeave}
-          style={{
-            rotateX,
-            rotateY,
-            transformStyle: 'preserve-3d',
-          }}
-          className="relative h-full group cursor-pointer"
-        >
-          <motion.div
-            animate={{
-              scale: isHovered ? 1.05 : 1,
-            }}
-            transition={{ duration: 0.3 }}
-            className="glass-strong rounded-2xl p-6 h-full flex flex-col space-y-4 overflow-hidden relative"
-          >
-            {/* Gradient overlay on hover */}
-            <motion.div
-              animate={{
-                opacity: isHovered ? 0.1 : 0,
-              }}
-              className="absolute inset-0 bg-gradient-to-br from-teal-500 via-emerald-500 to-green-600 pointer-events-none"
-            />
-
-            {/* Glow effect */}
-            <motion.div
-              animate={{
-                opacity: isHovered ? 1 : 0,
-              }}
-              className="absolute inset-0 rounded-2xl glow-effect pointer-events-none"
-            />
-
-            {/* Logo/Icon */}
-            <div className="relative z-10">
-              <motion.div
-                animate={{
-                  rotate: isHovered ? 360 : 0,
-                }}
-                transition={{ duration: 0.6 }}
-                className="w-16 h-16 rounded-xl bg-gradient-to-br from-teal-500/20 via-emerald-500/20 to-green-600/20 flex items-center justify-center backdrop-blur-sm"
-              >
-                {project.logo ? (
-                  <img
-                    src={project.logo}
-                    alt={project.title}
-                    className="w-10 h-10 object-contain"
-                  />
+      <Link to={project.link} className="block w-full h-full">
+        {/* Structural Card Container */}
+        <div className="border-editorial bg-white dark:bg-[#0a0a0a] overflow-hidden relative shadow-editorial transition-shadow duration-500 hover:shadow-2xl flex flex-col h-full">
+          
+          {/* Top Image / Logo Section */}
+          <div className={`relative h-64 overflow-hidden border-b border-editorial flex items-center justify-center ${project.mainLogoDark ? 'bg-[#1a1a1a]' : 'bg-gray-50 dark:bg-[#111]'}`}>
+             <div ref={imageRef} className="relative w-full h-full">
+                {project.mainLogo ? (
+                  <>
+                    {/* Main logo - shown by default */}
+                    <div className="absolute inset-0 flex items-center justify-center p-8 transition-[opacity,transform] duration-500 opacity-100 group-hover:opacity-0 group-hover:scale-95 z-10">
+                      <img
+                        src={project.mainLogo}
+                        alt={project.title}
+                        loading="lazy"
+                        className={`object-contain ${project.id === 'iberdrola' ? 'max-w-[100%] max-h-[100%] scale-150' : 'max-w-[80%] max-h-[80%]'}`}
+                      />
+                    </div>
+                    {/* Tech logos - shown on hover */}
+                    <div className="absolute inset-0 flex flex-wrap items-center justify-center gap-5 p-8 transition-[opacity,transform] duration-500 opacity-0 group-hover:opacity-100 scale-95 group-hover:scale-100 z-10">
+                      {project.logos && project.logos.map((logo, idx) => (
+                        <img
+                          key={idx}
+                          src={logo}
+                          alt={`${project.title} tech ${idx}`}
+                          className="w-14 h-14 object-contain transition-all duration-500"
+                        />
+                      ))}
+                    </div>
+                  </>
+                ) : project.logos && project.logos.length > 0 ? (
+                  <div className="absolute inset-0 flex flex-wrap items-center justify-center gap-6 p-8">
+                    {project.logos.map((logo, idx) => (
+                      <img
+                        key={idx}
+                        src={logo}
+                        alt={`${project.title} tech ${idx}`}
+                        className="w-16 h-16 object-contain filter grayscale group-hover:grayscale-0 transition-[filter] duration-700"
+                      />
+                    ))}
+                  </div>
+                ) : project.logo ? (
+                  <div className="absolute inset-0 flex items-center justify-center p-8">
+                    <img
+                      src={project.logo}
+                      alt={project.title}
+                      className="max-w-full max-h-full object-contain filter grayscale group-hover:grayscale-0 transition-[filter] duration-700"
+                    />
+                  </div>
                 ) : (
-                  <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-teal-500 to-green-600" />
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <h3 className="text-4xl font-bold opacity-20">PROJECT</h3>
+                  </div>
                 )}
-              </motion.div>
-            </div>
+             </div>
+             
+             {/* Hover Accent Overlay */}
+             <div className="absolute inset-0 bg-accent/0 group-hover:bg-accent/5 transition-colors duration-500 z-0"></div>
+          </div>
 
-            {/* Content */}
-            <div className="relative z-10 flex-1 flex flex-col">
-              <h3 className="text-2xl font-bold dark:text-white text-gray-900 mb-2 font-mono group-hover:gradient-text transition-all duration-300">
-                {project.title}
-              </h3>
-              <p className="dark:text-gray-200 text-gray-800 text-sm leading-relaxed flex-1 line-clamp-3">
-                {project.description}
-              </p>
+          {/* Content Section */}
+          <div className="p-8 flex flex-col flex-grow">
+            <h3 className="text-2xl font-bold mb-4 font-serif text-black dark:text-white group-hover:text-accent transition-colors duration-300">
+              {project.title}
+            </h3>
+            
+            <p className="text-gray-600 dark:text-gray-400 font-light leading-relaxed flex-grow">
+              {project.description}
+            </p>
+            
+            {/* Minimalist Link */}
+            <div className="mt-8 flex items-center text-sm font-bold tracking-widest uppercase">
+              <span className="text-black dark:text-white group-hover:text-accent transition-colors duration-300">
+                {project.linkText || 'View Project'}
+              </span>
+              <span className="ml-2 transform translate-x-0 group-hover:translate-x-2 transition-transform duration-300 text-accent">
+                →
+              </span>
             </div>
-
-            {/* View Project Button */}
-            <div className="relative z-10">
-              <motion.div
-                whileHover={{ x: 5 }}
-                className="flex items-center dark:text-emerald-400 text-teal-700 font-mono text-sm font-bold"
-              >
-                <span>{project.linkText || 'View Project'}</span>
-                <motion.span
-                  animate={{
-                    x: isHovered ? 5 : 0,
-                  }}
-                  className="ml-2"
-                >
-                  →
-                </motion.span>
-              </motion.div>
-            </div>
-
-            {/* Floating particles effect */}
-            <div className="absolute top-0 right-0 w-32 h-32 bg-green-500/10 rounded-full blur-3xl pointer-events-none" />
-            <div className="absolute bottom-0 left-0 w-32 h-32 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
       </Link>
-    </motion.div>
+    </div>
   );
 };
 

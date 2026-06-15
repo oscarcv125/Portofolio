@@ -1,273 +1,250 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { Helmet } from "react-helmet";
-import { motion, useScroll, useTransform } from "framer-motion";
 import { Link } from "react-router-dom";
+import anime from "animejs";
 
-import { faMailBulk, faPhone } from "@fortawesome/free-solid-svg-icons";
+import { faMailBulk, faPhone, faCertificate } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faInstagram, faLinkedin, faGithub } from "@fortawesome/free-brands-svg-icons";
+import { faInstagram, faLinkedin, faGoogle, faHubspot } from "@fortawesome/free-brands-svg-icons";
 
 import NavBar from "../components/common/navBar";
 import ProjectCard from "../components/projects/ProjectCard";
-import ParticlesBackground from "../components/common/ParticlesBackground";
 
 import INFO from "../data/user";
 import SEO from "../data/seo";
 
 const Homepage = () => {
-	const [displayedText, setDisplayedText] = useState("");
-	const [currentRoleIndex, setCurrentRoleIndex] = useState(0);
-	const { scrollY } = useScroll();
-	const y = useTransform(scrollY, [0, 300], [0, -50]);
-
-	const roles = [
-		"Software Engineer",
-		"iOS Developer",
-		"Full-Stack Developer",
-		"AI Enthusiast",
-		"Problem Solver"
-	];
+	const heroRef = useRef(null);
+	const nameRef = useRef(null);
+	const descRef = useRef(null);
+	const linksRef = useRef(null);
 
 	useEffect(() => {
 		window.scrollTo(0, 0);
+
+		// Anime.js Timeline for Editorial Entrance
+		const tl = anime.timeline({
+			easing: 'easeOutExpo',
+			duration: 1500
+		});
+
+		tl.add({
+			targets: nameRef.current.children,
+			translateY: [100, 0],
+			opacity: [0, 1],
+			delay: anime.stagger(100),
+		})
+		.add({
+			targets: descRef.current,
+			translateY: [20, 0],
+			opacity: [0, 1],
+		}, '-=800')
+		.add({
+			targets: linksRef.current.children,
+			translateY: [20, 0],
+			opacity: [0, 1],
+			delay: anime.stagger(100)
+		}, '-=1000');
+
 	}, []);
-
-	// Typewriter effect
-	useEffect(() => {
-		const currentRole = roles[currentRoleIndex];
-		let currentIndex = 0;
-		let isDeleting = false;
-		let timeout;
-
-		const typeWriter = () => {
-			if (!isDeleting && currentIndex <= currentRole.length) {
-				setDisplayedText(currentRole.substring(0, currentIndex));
-				currentIndex++;
-				timeout = setTimeout(typeWriter, 100);
-			} else if (!isDeleting && currentIndex > currentRole.length) {
-				timeout = setTimeout(() => {
-					isDeleting = true;
-					typeWriter();
-				}, 2000);
-			} else if (isDeleting && currentIndex > 0) {
-				currentIndex--;
-				setDisplayedText(currentRole.substring(0, currentIndex));
-				timeout = setTimeout(typeWriter, 50);
-			} else if (isDeleting && currentIndex === 0) {
-				isDeleting = false;
-				setCurrentRoleIndex((prev) => (prev + 1) % roles.length);
-			}
-		};
-
-		typeWriter();
-		return () => clearTimeout(timeout);
-	}, [currentRoleIndex]);
 
 	const currentSEO = SEO.find((item) => item.page === "home");
 
-	const containerVariants = {
-		hidden: { opacity: 0 },
-		visible: {
-			opacity: 1,
-			transition: {
-				delayChildren: 0.3,
-				staggerChildren: 0.2
-			}
-		}
-	};
-
-	const itemVariants = {
-		hidden: { y: 20, opacity: 0 },
-		visible: {
-			y: 0,
-			opacity: 1
-		}
-	};
-
 	return (
-		<div className="min-h-screen overflow-hidden">
+		<div className="min-h-screen overflow-hidden dark:bg-[#050505] bg-[#fafafa]">
 			<Helmet>
 				<title>{INFO.main.title}</title>
 				<meta name="description" content={currentSEO?.description || ""} />
 				<meta name="keywords" content={currentSEO?.keywords.join(", ") || ""} />
 			</Helmet>
 
-			<ParticlesBackground />
 			<NavBar />
 
-			{/* Hero Section */}
-			<motion.section
-				style={{ y }}
-				className="relative min-h-screen flex items-center justify-center px-8 md:px-6 pt-32 pb-20"
+			{/* Hero Section - Minimalist Editorial */}
+			<section
+				ref={heroRef}
+				className="relative min-h-screen flex flex-col justify-center px-8 md:px-12 pt-32 pb-20"
 			>
-				<div className="max-w-6xl mx-auto w-full">
-					<motion.div
-						variants={containerVariants}
-						initial="hidden"
-						animate="visible"
-						className="grid md:grid-cols-2 gap-12 items-center"
-					>
-						{/* Left Side - Text Content */}
-						<motion.div variants={itemVariants} className="space-y-6">
-							<motion.div
-								initial={{ opacity: 0, y: 20 }}
-								animate={{ opacity: 1, y: 0 }}
-								className="space-y-2"
+				<div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+					
+					{/* Left Col - Massive Typography */}
+					<div className="lg:col-span-8 space-y-8 z-10">
+						<div className="overflow-hidden">
+							<h1 
+								ref={nameRef}
+								className="text-6xl md:text-8xl lg:text-9xl font-bold leading-tight"
 							>
-								<h2 className="text-2xl md:text-3xl font-mono dark:text-emerald-400 text-teal-600">
-									Hi, I'm
-								</h2>
-								<h1 className="text-5xl md:text-7xl font-bold gradient-text">
-									{INFO.main.name}
-								</h1>
-								<div className="h-16 md:h-20">
-									<h2 className="text-3xl md:text-4xl font-mono dark:text-lime-300 text-lime-600">
-										{displayedText}
-										<motion.span
-											animate={{ opacity: [1, 0, 1] }}
-											transition={{ duration: 0.8, repeat: Infinity }}
-											className="inline-block w-1 h-8 md:h-10 dark:bg-lime-400 bg-lime-600 ml-1"
-										/>
-									</h2>
-								</div>
-							</motion.div>
+								<span className="block inline-block overflow-hidden pb-4">
+									<span className="inline-block">Oscar</span>
+								</span>
+								<br />
+								<span className="block inline-block overflow-hidden">
+									<span className="inline-block text-accent italic pr-8">Cardenas.</span>
+								</span>
+							</h1>
+						</div>
 
-							<motion.p
-								variants={itemVariants}
-								className="text-lg md:text-xl dark:text-gray-200 text-gray-800 leading-relaxed"
-							>
-								{INFO.homepage.description.substring(0, 200)}...
-							</motion.p>
+						<div ref={descRef} className="max-w-2xl opacity-0">
+							<p className="text-xl md:text-2xl font-light dark:text-gray-300 text-gray-600 leading-relaxed font-sans">
+								{INFO.homepage.description}
+							</p>
+						</div>
 
-							{/* Social Icons */}
-							<motion.div variants={itemVariants} className="flex gap-4 pt-4">
+						{/* Links & CTA */}
+						<div ref={linksRef} className="flex flex-wrap items-center gap-6 pt-8 opacity-0">
+							<Link to="/projects" className="group relative inline-flex items-center justify-center px-8 py-4 font-bold text-white bg-accent overflow-hidden rounded-none border-editorial">
+								<span className="relative z-10 transition-transform duration-300 group-hover:-translate-y-1">Selected Works</span>
+								<div className="absolute inset-0 bg-black dark:bg-white transform scale-y-0 origin-bottom transition-transform duration-300 group-hover:scale-y-100"></div>
+								<span className="absolute z-10 transition-transform duration-300 translate-y-12 group-hover:-translate-y-1 text-white dark:text-black">Selected Works</span>
+							</Link>
+
+							<div className="flex gap-4">
 								{[
-									{ icon: faLinkedin, link: INFO.socials.linkedin, color: "hover:text-emerald-400" },
-									{ icon: faInstagram, link: INFO.socials.instagram, color: "hover:text-amber-400" },
-									{ icon: faMailBulk, link: `mailto:${INFO.main.email}`, color: "hover:text-green-400" },
-									{ icon: faPhone, link: `tel:${INFO.main.phone}`, color: "hover:text-lime-400" },
+									{ icon: faLinkedin, link: INFO.socials.linkedin },
+									{ icon: faInstagram, link: INFO.socials.instagram },
+									{ icon: faMailBulk, link: `mailto:${INFO.main.email}` },
 								].map((social, index) => (
-									<motion.a
+									<a
 										key={index}
 										href={social.link}
 										target="_blank"
 										rel="noreferrer"
-										whileHover={{ scale: 1.2, rotate: 5 }}
-										whileTap={{ scale: 0.9 }}
-										className={`w-14 h-14 rounded-full glass flex items-center justify-center dark:text-gray-200 text-gray-800 ${social.color} transition-all duration-300`}
+										className="w-14 h-14 flex items-center justify-center border-editorial rounded-full hover:bg-accent hover:text-white transition-colors duration-300 dark:text-white text-black"
 									>
-										<FontAwesomeIcon icon={social.icon} className="text-2xl" />
-									</motion.a>
+										<FontAwesomeIcon icon={social.icon} className="text-xl" />
+									</a>
 								))}
-							</motion.div>
-
-							{/* CTA Buttons */}
-							<motion.div variants={itemVariants} className="flex flex-wrap gap-4 pt-4">
-								<Link to="/projects">
-									<motion.button
-										whileHover={{ scale: 1.05 }}
-										whileTap={{ scale: 0.95 }}
-										className="px-8 py-4 bg-gradient-to-r from-teal-500 via-emerald-500 to-green-600 rounded-full font-mono font-bold text-white shadow-lg hover:shadow-xl transition-all duration-300"
-									>
-										View My Work
-									</motion.button>
-								</Link>
-								<Link to="/contact">
-									<motion.button
-										whileHover={{ scale: 1.05 }}
-										whileTap={{ scale: 0.95 }}
-										className="px-8 py-4 glass-strong rounded-full font-mono font-bold dark:text-white text-gray-900 hover:bg-white/20 transition-all duration-300"
-									>
-										Get In Touch
-									</motion.button>
-								</Link>
-							</motion.div>
-						</motion.div>
-
-						{/* Right Side - Animated Image */}
-						<motion.div
-							variants={itemVariants}
-							className="relative flex items-center justify-center"
-						>
-							<motion.div
-								animate={{
-									rotate: [0, 5, -5, 0],
-								}}
-								transition={{
-									duration: 5,
-									repeat: Infinity,
-									ease: "easeInOut"
-								}}
-								className="relative"
-							>
-								<div className="absolute inset-0 bg-gradient-to-r from-emerald-400 via-green-400 to-teal-400 rounded-3xl blur-2xl opacity-30 animate-pulse"></div>
-								<div className="relative glass-strong rounded-3xl p-2 glow-effect">
-									<img
-										src="/homepage.jpeg"
-										alt={INFO.main.name}
-										className="rounded-2xl w-full max-w-md object-cover"
-									/>
-								</div>
-							</motion.div>
-						</motion.div>
-					</motion.div>
-				</div>
-
-				{/* Scroll Indicator */}
-				<motion.div
-					animate={{ y: [0, 10, 0] }}
-					transition={{ duration: 1.5, repeat: Infinity }}
-					className="absolute bottom-10 left-1/2 transform -translate-x-1/2"
-				>
-					<div className="w-6 h-10 border-2 dark:border-white/30 border-gray-400/50 rounded-full flex justify-center p-2">
-						<motion.div
-							animate={{ y: [0, 12, 0] }}
-							transition={{ duration: 1.5, repeat: Infinity }}
-							className="w-1 h-2 dark:bg-white/50 bg-gray-600 rounded-full"
-						/>
+							</div>
+						</div>
 					</div>
-				</motion.div>
-			</motion.section>
+
+					{/* Right Col - Structural Image */}
+					<div className="lg:col-span-4 relative flex justify-end">
+						<div className="relative w-full aspect-[3/4] max-w-sm">
+							<div className="absolute inset-0 border-editorial translate-x-4 translate-y-4"></div>
+							<img
+								src="/homepage.jpeg"
+								alt={INFO.main.name}
+								className="absolute inset-0 w-full h-full object-cover filter grayscale hover:grayscale-0 transition-[filter] duration-700"
+							/>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			{/* Experience & Certifications */}
+			<section className="relative py-32 px-8 md:px-12 border-t border-editorial">
+				<div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16">
+					
+					{/* Experience */}
+					<div>
+						<h2 className="text-sm font-bold tracking-widest uppercase text-accent mb-12">
+							Experience
+						</h2>
+						<div className="border-l-2 border-accent pl-6 py-2">
+							<div className="flex flex-col xl:flex-row xl:justify-between xl:items-start mb-2 gap-2">
+								<div>
+									<h4 className="text-xl font-bold font-serif text-black dark:text-white">
+										Software Engineer / DevOps
+									</h4>
+									<p className="text-lg font-bold text-gray-800 dark:text-gray-200">
+										Nolu.AI
+									</p>
+								</div>
+								<span className="text-sm font-mono tracking-widest uppercase text-gray-500">
+									2025 — Present
+								</span>
+							</div>
+							<p className="text-sm font-mono tracking-widest uppercase text-accent mb-4">
+								Contract · Remote
+							</p>
+							<p className="text-base text-gray-600 dark:text-gray-400 mb-4 leading-relaxed">
+								Contract software engineering & DevOps — I designed, developed, and deployed products with AI integrations for client companies like Pied and Happymile.
+							</p>
+							<ul className="list-disc list-inside text-sm text-gray-600 dark:text-gray-400 leading-relaxed space-y-2">
+								<li>Designed the requirements and developed for an AI-assisted operations CRM (FastAPI + MongoDB, React 19) — OpenAI-powered task auto-classification, auto-assignment, and insights — and led a team of developers delivering it on GCP Cloud Run + Firebase.</li>
+							</ul>
+						</div>
+					</div>
+
+					{/* Certifications */}
+					<div>
+						<h2 className="text-sm font-bold tracking-widest uppercase text-accent mb-12">
+							Certifications
+						</h2>
+						<div className="space-y-6">
+							{[
+								{ title: "Google AI Essentials", org: "Google", date: "jun. 2026", id: "6HHLC2SPRWTU", icon: faGoogle },
+								{ title: "Generative AI Leader Certification", org: "Google", date: "may. 2026", id: "dd28fcf2504948d38c9b7930215c072e", icon: faGoogle },
+								{ title: "Digital Marketing Certified", org: "HubSpot Academy", date: "", id: "7tbw7xg5", icon: faHubspot },
+								{ title: "Introduction to Model Context Protocol", org: "Anthropic", date: "abr. 2026", id: "b6nybrgc8ge3", imgIcon: "/logos/anthropic.svg" },
+								{ title: "Certificate of completion: Introduction to agent skills", org: "Anthropic", date: "abr. 2026", id: "6ivdrpdrib8c", imgIcon: "/logos/anthropic.svg" },
+								{ title: "Claude Code in Action", org: "Anthropic", date: "abr. 2026", id: "ivxs3gasyu3h", imgIcon: "/logos/anthropic.svg" },
+								{ title: "Building with the Claude API", org: "Anthropic", date: "abr. 2026", id: "4xq4i6qh66bu", imgIcon: "/logos/anthropic.svg" },
+							].map((cert, i) => {
+								const imgRef = React.createRef();
+								return (
+								<div
+									key={i}
+									className="flex gap-4 items-start border border-editorial p-4 hover:border-accent transition-colors duration-300 group"
+									onMouseEnter={() => { if (imgRef.current) imgRef.current.style.filter = 'none'; }}
+									onMouseLeave={() => { if (imgRef.current) imgRef.current.style.filter = 'brightness(0)'; }}
+								>
+									<div className="flex items-center justify-center shrink-0 w-8 h-8 text-xl text-black dark:text-white group-hover:text-accent transition-colors">
+										{cert.imgIcon ? (
+											<img
+												ref={imgRef}
+												src={cert.imgIcon}
+												alt={cert.org}
+												className="w-full h-full object-contain transition-all duration-300"
+												style={{ filter: 'brightness(0)' }}
+											/>
+										) : (
+											<FontAwesomeIcon icon={cert.icon} />
+										)}
+									</div>
+									<div>
+										<h4 className="text-base font-bold font-serif text-black dark:text-white leading-snug mb-1">
+											{cert.title}
+										</h4>
+										<p className="text-sm text-gray-600 dark:text-gray-400 font-bold mb-1">
+											{cert.org} {cert.date && <span className="font-light">· {cert.date}</span>}
+										</p>
+										<p className="text-xs font-mono text-gray-400 dark:text-gray-500 uppercase tracking-widest break-all">
+											ID: {cert.id}
+										</p>
+									</div>
+								</div>
+								);
+							})}
+						</div>
+					</div>
+
+				</div>
+			</section>
 
 			{/* Featured Projects Section */}
-			<section className="relative py-20 px-8 md:px-6">
-				<div className="max-w-6xl mx-auto">
-					<motion.div
-						initial={{ opacity: 0, y: 20 }}
-						whileInView={{ opacity: 1, y: 0 }}
-						viewport={{ once: true }}
-						className="text-center mb-12"
-					>
-						<h2 className="text-4xl md:text-5xl font-bold gradient-text mb-4">
-							Featured Projects
-						</h2>
-						<p className="text-xl dark:text-gray-200 text-gray-800 font-mono">
-							Check out some of my recent work
-						</p>
-					</motion.div>
+			<section className="relative py-32 px-8 md:px-12 border-t border-editorial">
+				<div className="max-w-7xl mx-auto">
+					<div className="flex justify-between items-end mb-16">
+						<div>
+							<h2 className="text-sm font-bold tracking-widest uppercase text-accent mb-4">
+								Portfolio
+							</h2>
+							<h3 className="text-4xl md:text-6xl font-bold">
+								Featured Work
+							</h3>
+						</div>
+						<Link to="/projects" className="hidden md:inline-block text-lg border-b border-black dark:border-white pb-1 hover:text-accent hover:border-accent transition-colors">
+							View All Projects
+						</Link>
+					</div>
 
 					<div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
 						{INFO.projects.slice(0, 6).map((project, index) => (
 							<ProjectCard key={project.id} project={project} index={index} />
 						))}
 					</div>
-
-					<motion.div
-						initial={{ opacity: 0 }}
-						whileInView={{ opacity: 1 }}
-						viewport={{ once: true }}
-						className="text-center mt-12"
-					>
-						<Link to="/projects">
-							<motion.button
-								whileHover={{ scale: 1.05 }}
-								whileTap={{ scale: 0.95 }}
-								className="px-8 py-4 glass-strong rounded-full font-mono font-bold dark:text-white text-gray-900 hover:bg-white/20 transition-all duration-300"
-							>
-								View All Projects →
-							</motion.button>
-						</Link>
-					</motion.div>
 				</div>
 			</section>
 		</div>

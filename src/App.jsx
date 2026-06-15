@@ -9,7 +9,8 @@ import Projects from "./pages/projects";
 import ProjectDetail from "./pages/projectDetail";
 import Contact from "./pages/contact";
 import Notfound from "./pages/404";
-import CustomCursor from "./components/common/CustomCursor";
+import Articles from "./pages/articles";
+import ReadArticle from "./pages/readArticle";
 import ScrollProgressIndicator from "./components/common/ScrollProgressIndicator";
 
 import { TRACKING_ID } from "./data/tracking";
@@ -47,7 +48,6 @@ function App() {
 
 	return (
 		<div className="App min-h-screen">
-			<CustomCursor />
 			<ScrollProgressIndicator />
 
 			<AnimatePresence mode="wait">
@@ -119,6 +119,34 @@ function App() {
 								transition={pageTransition}
 							>
 								<Contact />
+							</motion.div>
+						}
+					/>
+					<Route
+						path="/articles"
+						element={
+							<motion.div
+								initial="initial"
+								animate="animate"
+								exit="exit"
+								variants={pageVariants}
+								transition={pageTransition}
+							>
+								<Articles />
+							</motion.div>
+						}
+					/>
+					<Route
+						path="/article/:slug"
+						element={
+							<motion.div
+								initial="initial"
+								animate="animate"
+								exit="exit"
+								variants={pageVariants}
+								transition={pageTransition}
+							>
+								<ReadArticle />
 							</motion.div>
 						}
 					/>

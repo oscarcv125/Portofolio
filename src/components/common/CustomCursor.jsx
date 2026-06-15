@@ -1,25 +1,39 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 
 const CustomCursor = () => {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
+  const mouseX = useMotionValue(-100);
+  const mouseY = useMotionValue(-100);
+
+  // Dot (fast)
+  const dotSpringX = useSpring(mouseX, { stiffness: 500, damping: 30, mass: 0.5 });
+  const dotSpringY = useSpring(mouseY, { stiffness: 500, damping: 30, mass: 0.5 });
+  const dotX = useTransform(dotSpringX, v => v - 6);
+  const dotY = useTransform(dotSpringY, v => v - 6);
+
+  // Ring (slower lag)
+  const ringSpringX = useSpring(mouseX, { stiffness: 200, damping: 20, mass: 0.8 });
+  const ringSpringY = useSpring(mouseY, { stiffness: 200, damping: 20, mass: 0.8 });
+  const ringX = useTransform(ringSpringX, v => v - 16);
+  const ringY = useTransform(ringSpringY, v => v - 16);
+
+
   useEffect(() => {
-    // Check if device is mobile
     setIsMobile(window.matchMedia('(pointer: coarse)').matches);
 
+    // motion value .set() does NOT trigger React re-renders
     const updateMousePosition = (e) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
+      mouseX.set(e.clientX);
+      mouseY.set(e.clientY);
     };
 
     const handleMouseEnter = () => setIsHovering(true);
     const handleMouseLeave = () => setIsHovering(false);
 
-    // Add hover listeners to interactive elements
     const interactiveElements = document.querySelectorAll('a, button, input, textarea, [role="button"]');
-
     interactiveElements.forEach((el) => {
       el.addEventListener('mouseenter', handleMouseEnter);
       el.addEventListener('mouseleave', handleMouseLeave);
@@ -34,69 +48,26 @@ const CustomCursor = () => {
         el.removeEventListener('mouseleave', handleMouseLeave);
       });
     };
-  }, []);
+  }, [mouseX, mouseY]);
 
-  // Don't show custom cursor on mobile devices
   if (isMobile) return null;
 
   return (
     <>
-      {/* Main cursor dot */}
       <motion.div
-        className="fixed top-0 left-0 w-3 h-3 rounded-full pointer-events-none z-[9999] mix-blend-difference"
-        style={{
-          background: 'white',
-        }}
-        animate={{
-          x: mousePosition.x - 6,
-          y: mousePosition.y - 6,
-          scale: isHovering ? 0.8 : 1,
-        }}
-        transition={{
-          type: 'spring',
-          damping: 30,
-          stiffness: 500,
-          mass: 0.5,
-        }}
+        className="fixed top-0 left-0 w-3 h-3 rounded-full pointer-events-none z-[9999]"
+        style={{ background: 'white', x: dotX, y: dotY }}
+        animate={{ scale: isHovering ? 0.8 : 1 }}
+        transition={{ type: 'spring', damping: 30, stiffness: 500, mass: 0.5 }}
       />
 
-      {/* Cursor ring */}
       <motion.div
         className="fixed top-0 left-0 w-8 h-8 rounded-full pointer-events-none z-[9998] border-2"
-        style={{
-          borderColor: 'rgba(255, 255, 255, 0.5)',
-        }}
-        animate={{
-          x: mousePosition.x - 16,
-          y: mousePosition.y - 16,
-          scale: isHovering ? 1.5 : 1,
-        }}
-        transition={{
-          type: 'spring',
-          damping: 20,
-          stiffness: 200,
-          mass: 0.8,
-        }}
+        style={{ borderColor: 'rgba(255, 255, 255, 0.5)', x: ringX, y: ringY }}
+        animate={{ scale: isHovering ? 1.5 : 1 }}
+        transition={{ type: 'spring', damping: 20, stiffness: 200, mass: 0.8 }}
       />
 
-      {/* Trailing effect */}
-      <motion.div
-        className="fixed top-0 left-0 w-2 h-2 rounded-full pointer-events-none z-[9997]"
-        style={{
-          background: 'linear-gradient(135deg, #06b6d4, #a855f7, #ec4899)',
-          filter: 'blur(4px)',
-        }}
-        animate={{
-          x: mousePosition.x - 4,
-          y: mousePosition.y - 4,
-        }}
-        transition={{
-          type: 'spring',
-          damping: 15,
-          stiffness: 150,
-          mass: 1.2,
-        }}
-      />
     </>
   );
 };

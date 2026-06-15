@@ -130,7 +130,7 @@ const ImageCarousel = ({ images, autoPlayInterval = 4000 }) => {
             onClick={() => handleDotClick(index)}
             className={`transition-all duration-300 rounded-full ${
               index === currentIndex
-                ? 'w-8 h-2 bg-gradient-to-r from-teal-500 via-emerald-500 to-green-600'
+                ? 'w-8 h-2 bg-accent'
                 : 'w-2 h-2 dark:bg-white/50 bg-gray-400/70 dark:hover:bg-white/80 hover:bg-gray-500/90'
             }`}
             aria-label={`Go to slide ${index + 1}`}

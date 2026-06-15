@@ -53,10 +53,10 @@ const Articles = () => {
 								{myArticles.map((article, index) => (
 									<div
 										className="articles-article"
-										key={(index + 1).toString()}
+										key={article().title || `article-${index}`}
 									>
 										<Article
-											key={(index + 1).toString()}
+											key={article().title || `article-${index}`}
 											date={article().date}
 											title={article().title}
 											description={article().description}

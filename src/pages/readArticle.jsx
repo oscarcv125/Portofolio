@@ -18,11 +18,50 @@ const ReadArticle = () => {
 	const navigate = useNavigate();
 	let { slug } = useParams();
 
-	const article = myArticles[slug - 1];
+	const articleIndex = parseInt(slug, 10) - 1;
+	const article = myArticles[articleIndex];
 
 	useEffect(() => {
 		window.scrollTo(0, 0);
 	}, [article]);
+
+	if (!article) {
+		return (
+			<React.Fragment>
+				<Helmet>
+					<title>{`Article Not Found | ${INFO.main.title}`}</title>
+				</Helmet>
+				<div className="page-content">
+					<NavBar />
+					<div className="content-wrapper">
+						<div className="read-article-logo-container">
+							<div className="read-article-logo">
+								<Logo width={46} />
+							</div>
+						</div>
+						<div className="read-article-container">
+							<div className="read-article-back">
+								<img
+									src="../back-button.png"
+									alt="back"
+									className="read-article-back-button"
+									onClick={() => navigate(-1)}
+								/>
+							</div>
+							<div className="read-article-wrapper">
+								<div className="title read-article-title">
+									Article Not Found
+								</div>
+							</div>
+						</div>
+						<div className="page-footer">
+							<Footer />
+						</div>
+					</div>
+				</div>
+			</React.Fragment>
+		);
+	}
 
 	ArticleStyle = styled.div`
 		${article().style}
