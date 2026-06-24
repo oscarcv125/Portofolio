@@ -8,6 +8,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInstagram, faLinkedin, faGoogle, faHubspot, faGithub } from "@fortawesome/free-brands-svg-icons";
 
 import NavBar from "../components/common/navBar";
+import EchoText from "../components/common/EchoText";
+import Lanyard from "../components/common/Lanyard";
 import ProjectCard from "../components/projects/ProjectCard";
 
 import INFO from "../data/user";
@@ -70,16 +72,16 @@ const Homepage = () => {
 					{/* Left Col - Massive Typography */}
 					<div className="lg:col-span-8 space-y-8 z-10">
 						<div className="overflow-hidden">
-							<h1 
+							<h1
 								ref={nameRef}
 								className="text-6xl md:text-8xl lg:text-9xl font-bold leading-tight"
 							>
-								<span className="block inline-block overflow-hidden pb-4">
-									<span className="inline-block">Oscar</span>
+								<span className="block inline-block overflow-visible pb-4">
+									<EchoText text="Oscar" />
 								</span>
 								<br />
-								<span className="block inline-block overflow-hidden">
-									<span className="inline-block text-accent italic pr-8">Cardenas.</span>
+								<span className="block inline-block overflow-visible">
+									<EchoText text="Cardenas." className="text-accent italic pr-8" />
 								</span>
 							</h1>
 						</div>
@@ -118,17 +120,39 @@ const Homepage = () => {
 						</div>
 					</div>
 
-					{/* Right Col - Structural Image */}
-					<div className="lg:col-span-4 relative flex justify-end">
-						<div className="relative w-full aspect-[3/4] max-w-sm">
-							<div className="absolute inset-0 border border-editorial translate-x-4 translate-y-4"></div>
-							<img
-								src="/homepage.jpeg"
-								alt={INFO.main.name}
-								className="absolute inset-0 w-full h-full object-cover filter grayscale hover:grayscale-0 transition-[filter] duration-700"
-							/>
+					{/* Right Col - Interactive Lanyard */}
+					<div className="lg:col-span-4 relative flex justify-end self-start overflow-visible z-50">
+						<div className="relative w-full h-[850px] lg:-mt-32 lg:-mr-40 lg:-ml-24 z-50">
+							<Lanyard photoUrl="/homepage.jpeg" />
 						</div>
 					</div>
+				</div>
+			</section>
+
+			{/* TEMP: Font preview — remove later */}
+			<section className="relative px-8 md:px-12 py-20 border-t border-editorial bg-[#fafafa]">
+				<div className="max-w-7xl mx-auto space-y-16">
+					<p className="text-xs font-mono uppercase tracking-widest text-gray-500 mb-8">
+						Font preview · temporary
+					</p>
+					{[
+						{ label: "Archivo Black", family: "'Archivo Black', sans-serif" },
+						{ label: "Anton", family: "'Anton', sans-serif" },
+						{ label: "Bebas Neue", family: "'Bebas Neue', sans-serif" },
+						{ label: "Playfair Display Black", family: "'Playfair Display', serif" },
+						{ label: "Bowlby One", family: "'Bowlby One', sans-serif" },
+						{ label: "Rubik Mono One", family: "'Rubik Mono One', monospace" },
+					].map((font) => (
+						<div key={font.label} className="space-y-2">
+							<p className="text-xs font-mono uppercase tracking-widest text-gray-400">
+								{font.label}
+							</p>
+							<h2 className="text-6xl md:text-8xl lg:text-9xl font-bold leading-tight">
+								<EchoText text="Oscar" fontFamily={font.family} />{" "}
+								<EchoText text="Cardenas." fontFamily={font.family} />
+							</h2>
+						</div>
+					))}
 				</div>
 			</section>
 
