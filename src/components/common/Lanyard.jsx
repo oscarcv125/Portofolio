@@ -7,6 +7,7 @@ import {
 	CuboidCollider,
 	Physics,
 	RigidBody,
+	useRopeJoint,
 	useSphericalJoint,
 } from "@react-three/rapier";
 import { MeshLineGeometry, MeshLineMaterial } from "meshline";
@@ -17,8 +18,8 @@ const segmentProps = {
 	type: "dynamic",
 	canSleep: true,
 	colliders: false,
-	angularDamping: 2,
-	linearDamping: 2,
+	angularDamping: 4,
+	linearDamping: 4,
 };
 
 function makeStrapTexture() {
@@ -77,10 +78,11 @@ function Band({ photoUrl }) {
 	const [dragged, drag] = useState(false);
 	const [hovered, hover] = useState(false);
 
-	useSphericalJoint(fixed, j1, [[0, 0, 0], [0, 0.5, 0]]);
-	useSphericalJoint(j1, j2, [[0, -0.5, 0], [0, 0.5, 0]]);
-	useSphericalJoint(j2, j3, [[0, -0.5, 0], [0, 0.5, 0]]);
-	useSphericalJoint(j3, card, [[0, -0.5, 0], [0, 5.3, 0]]);
+	// Framer Lanyard_Prod physics — proven stable
+	useRopeJoint(fixed, j1, [[0, 0, 0], [0, 0, 0], 1]);
+	useRopeJoint(j1, j2, [[0, 0, 0], [0, 0, 0], 1]);
+	useRopeJoint(j2, j3, [[0, 0, 0], [0, 0, 0], 1]);
+	useSphericalJoint(j3, card, [[0, 0, 0], [0, 1.5, 0]]);
 
 	useEffect(() => {
 		if (hovered) {
@@ -125,7 +127,7 @@ function Band({ photoUrl }) {
 			rot.copy(card.current.rotation());
 			card.current.setAngvel({
 				x: ang.x,
-				y: ang.y - rot.y * 0.03,
+				y: ang.y - rot.y * 0.25,
 				z: ang.z,
 			});
 		}
@@ -135,24 +137,24 @@ function Band({ photoUrl }) {
 
 	return (
 		<>
-			<group position={[0, 10, 0]}>
+			<group position={[0, 4, 0]}>
 				<RigidBody ref={fixed} {...segmentProps} type="fixed" />
-				<RigidBody position={[0, -0.5, 0]} ref={j1} {...segmentProps}>
+				<RigidBody position={[0.5, 0, 0]} ref={j1} {...segmentProps}>
 					<BallCollider args={[0.1]} />
 				</RigidBody>
-				<RigidBody position={[0, -1.5, 0]} ref={j2} {...segmentProps}>
+				<RigidBody position={[1, 0, 0]} ref={j2} {...segmentProps}>
 					<BallCollider args={[0.1]} />
 				</RigidBody>
-				<RigidBody position={[0, -2.5, 0]} ref={j3} {...segmentProps}>
+				<RigidBody position={[1.5, 0, 0]} ref={j3} {...segmentProps}>
 					<BallCollider args={[0.1]} />
 				</RigidBody>
 				<RigidBody
-					position={[0, -8.3, 0]}
+					position={[2, 0, 0]}
 					ref={card}
 					{...segmentProps}
 					type={dragged ? "kinematicPosition" : "dynamic"}
 				>
-					<CuboidCollider args={[3.375, 4.5, 0.27]} />
+					<CuboidCollider args={[0.8, 1.125, 0.01]} />
 					<group
 						onPointerOver={() => hover(true)}
 						onPointerOut={() => hover(false)}
@@ -169,9 +171,9 @@ function Band({ photoUrl }) {
 							);
 						}}
 					>
-						{/* Card body — 3D box with thickness */}
+						{/* Card body */}
 						<mesh castShadow>
-							<boxGeometry args={[6.75, 9.0, 0.5]} />
+							<boxGeometry args={[1.6, 2.25, 0.02]} />
 							<meshPhysicalMaterial
 								color="#e4e4e7"
 								clearcoat={0.9}
@@ -181,8 +183,8 @@ function Band({ photoUrl }) {
 							/>
 						</mesh>
 						{/* Photo plane on front */}
-						<mesh position={[0, -0.15, 0.26]}>
-							<planeGeometry args={[6.3, 8.4]} />
+						<mesh position={[0, -0.04, 0.011]}>
+							<planeGeometry args={[1.5, 2.1]} />
 							<meshPhysicalMaterial
 								map={texture}
 								clearcoat={1}
@@ -192,9 +194,9 @@ function Band({ photoUrl }) {
 								side={THREE.FrontSide}
 							/>
 						</mesh>
-						{/* Photo plane on back (mirrored) */}
-						<mesh position={[0, -0.15, -0.26]} rotation={[0, Math.PI, 0]}>
-							<planeGeometry args={[6.3, 8.4]} />
+						{/* Photo plane on back */}
+						<mesh position={[0, -0.04, -0.011]} rotation={[0, Math.PI, 0]}>
+							<planeGeometry args={[1.5, 2.1]} />
 							<meshPhysicalMaterial
 								map={texture}
 								clearcoat={1}
@@ -204,18 +206,18 @@ function Band({ photoUrl }) {
 								side={THREE.FrontSide}
 							/>
 						</mesh>
-						{/* Metal connector at top of card */}
-						<mesh position={[0, 4.75, 0]}>
-							<boxGeometry args={[0.95, 0.38, 0.65]} />
+						{/* Metal connector */}
+						<mesh position={[0, 1.2, 0]}>
+							<boxGeometry args={[0.24, 0.1, 0.16]} />
 							<meshStandardMaterial
 								color="#9ca3af"
 								metalness={1}
 								roughness={0.18}
 							/>
 						</mesh>
-						{/* Metal clip ring (where strap loops through) */}
-						<mesh position={[0, 5.3, 0]} rotation={[Math.PI / 2, 0, 0]}>
-							<torusGeometry args={[0.32, 0.08, 16, 48]} />
+						{/* Clip ring */}
+						<mesh position={[0, 1.5, 0]} rotation={[Math.PI / 2, 0, 0]}>
+							<torusGeometry args={[0.08, 0.02, 16, 48]} />
 							<meshStandardMaterial
 								color="#9ca3af"
 								metalness={1}
@@ -233,7 +235,7 @@ function Band({ photoUrl }) {
 					useMap={1}
 					depthTest={false}
 					resolution={[1000, 1000]}
-					lineWidth={0.6}
+					lineWidth={0.15}
 					repeat={[-3, 1]}
 				/>
 			</mesh>
@@ -243,7 +245,7 @@ function Band({ photoUrl }) {
 
 const Lanyard = ({ photoUrl = "/homepage.jpeg" }) => (
 	<Canvas
-		camera={{ position: [0, 0, 32], fov: 28 }}
+		camera={{ position: [0, 0, 20], fov: 20 }}
 		style={{ pointerEvents: "auto" }}
 	>
 		<ambientLight intensity={Math.PI * 0.7} />
