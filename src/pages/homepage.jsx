@@ -185,6 +185,12 @@ const Homepage = () => {
 									2024 — Present
 								</span>
 							</div>
+							<p className="text-sm font-mono tracking-widest uppercase text-accent mb-4">
+								Contract · Remote
+							</p>
+							<p className="text-base text-gray-600 dark:text-gray-400 mb-4 leading-relaxed">
+								Design & engineering studio based in Mexico City building business automation, AI systems, and full-stack software for client companies. I work on Python automations, chatbot pipelines, and AI integrations that replace manual workflows in client operations.
+							</p>
 						</div>
 					</div>
 
