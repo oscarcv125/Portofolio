@@ -7,9 +7,9 @@ const REST_STEP_Y = 3;
 const HOVER_STEP_X = 3;
 const HOVER_STEP_Y = 2;
 
-const transition = { type: "spring", bounce: 0.15, duration: 1.6 };
+const transition = { type: "spring", bounce: 0.6, duration: 0.45 };
 
-const Letter = ({ char }) => (
+const Letter = ({ char, topColor }) => (
 	<motion.span
 		className="relative inline-block text-black"
 		initial="rest"
@@ -42,7 +42,7 @@ const Letter = ({ char }) => (
 
 		<motion.span
 			aria-hidden="true"
-			className="absolute top-0 left-0 pointer-events-none select-none text-white"
+			className={`absolute top-0 left-0 pointer-events-none select-none ${topColor}`}
 			style={{
 				WebkitTextStroke: "2px black",
 				paintOrder: "stroke fill",
@@ -58,7 +58,7 @@ const Letter = ({ char }) => (
 	</motion.span>
 );
 
-const EchoText = ({ text, className = "", fontFamily }) => (
+const EchoText = ({ text, className = "", fontFamily, topColor = "text-white" }) => (
 	<span
 		className={`inline-block ${className}`}
 		aria-label={text}
@@ -68,7 +68,7 @@ const EchoText = ({ text, className = "", fontFamily }) => (
 			char === " " ? (
 				<span key={i} className="inline-block">&nbsp;</span>
 			) : (
-				<Letter key={i} char={char} />
+				<Letter key={i} char={char} topColor={topColor} />
 			),
 		)}
 	</span>
