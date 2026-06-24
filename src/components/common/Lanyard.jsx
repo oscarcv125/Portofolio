@@ -7,7 +7,6 @@ import {
 	CuboidCollider,
 	Physics,
 	RigidBody,
-	useRopeJoint,
 	useSphericalJoint,
 } from "@react-three/rapier";
 import { MeshLineGeometry, MeshLineMaterial } from "meshline";
@@ -78,10 +77,10 @@ function Band({ photoUrl }) {
 	const [dragged, drag] = useState(false);
 	const [hovered, hover] = useState(false);
 
-	useRopeJoint(fixed, j1, [[0, 0, 0], [0, 0, 0], 1]);
-	useRopeJoint(j1, j2, [[0, 0, 0], [0, 0, 0], 1]);
-	useRopeJoint(j2, j3, [[0, 0, 0], [0, 0, 0], 1]);
-	useSphericalJoint(j3, card, [[0, 0, 0], [0, 5.3, 0]]);
+	useSphericalJoint(fixed, j1, [[0, 0, 0], [0, 0.5, 0]]);
+	useSphericalJoint(j1, j2, [[0, -0.5, 0], [0, 0.5, 0]]);
+	useSphericalJoint(j2, j3, [[0, -0.5, 0], [0, 0.5, 0]]);
+	useSphericalJoint(j3, card, [[0, -0.5, 0], [0, 5.3, 0]]);
 
 	useEffect(() => {
 		if (hovered) {
@@ -138,13 +137,13 @@ function Band({ photoUrl }) {
 		<>
 			<group position={[0, 10, 0]}>
 				<RigidBody ref={fixed} {...segmentProps} type="fixed" />
-				<RigidBody position={[0, -1, 0]} ref={j1} {...segmentProps}>
+				<RigidBody position={[0, -0.5, 0]} ref={j1} {...segmentProps}>
 					<BallCollider args={[0.1]} />
 				</RigidBody>
-				<RigidBody position={[0, -2, 0]} ref={j2} {...segmentProps}>
+				<RigidBody position={[0, -1.5, 0]} ref={j2} {...segmentProps}>
 					<BallCollider args={[0.1]} />
 				</RigidBody>
-				<RigidBody position={[0, -3, 0]} ref={j3} {...segmentProps}>
+				<RigidBody position={[0, -2.5, 0]} ref={j3} {...segmentProps}>
 					<BallCollider args={[0.1]} />
 				</RigidBody>
 				<RigidBody

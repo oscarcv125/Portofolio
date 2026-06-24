@@ -71,7 +71,7 @@ const Homepage = () => {
 					
 					{/* Left Col - Massive Typography */}
 					<div className="lg:col-span-8 space-y-8 z-10">
-						<div className="overflow-hidden">
+						<div className="overflow-visible pl-10 md:pl-14">
 							<h1
 								ref={nameRef}
 								className="text-5xl md:text-7xl lg:text-8xl font-bold leading-tight"
