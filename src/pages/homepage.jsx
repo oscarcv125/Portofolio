@@ -74,7 +74,7 @@ const Homepage = () => {
 						<div className="overflow-hidden">
 							<h1
 								ref={nameRef}
-								className="text-6xl md:text-8xl lg:text-9xl font-bold leading-tight"
+								className="text-5xl md:text-7xl lg:text-8xl font-bold leading-tight"
 							>
 								<span className="block inline-block overflow-visible pb-4">
 									<EchoText text="Oscar" fontFamily="'Rubik Mono One', monospace" />
