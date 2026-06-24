@@ -33,7 +33,7 @@ const ProjectCard = ({ project, index }) => {
     >
       <Link to={project.link} className="block w-full h-full">
         {/* Structural Card Container */}
-        <div className="border-editorial bg-white dark:bg-[#0a0a0a] overflow-hidden relative shadow-editorial transition-shadow duration-500 hover:shadow-2xl flex flex-col h-full">
+        <div className="border border-editorial bg-white dark:bg-[#0a0a0a] overflow-hidden relative shadow-editorial transition-shadow duration-500 hover:shadow-2xl flex flex-col h-full">
           
           {/* Top Image / Logo Section */}
           <div className={`relative h-64 overflow-hidden border-b border-editorial flex items-center justify-center ${project.mainLogoDark ? 'bg-[#1a1a1a]' : 'bg-gray-50 dark:bg-[#111]'}`}>

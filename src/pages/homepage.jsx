@@ -5,7 +5,7 @@ import anime from "animejs";
 
 import { faMailBulk, faPhone, faCertificate } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faInstagram, faLinkedin, faGoogle, faHubspot } from "@fortawesome/free-brands-svg-icons";
+import { faInstagram, faLinkedin, faGoogle, faHubspot, faGithub } from "@fortawesome/free-brands-svg-icons";
 
 import NavBar from "../components/common/navBar";
 import ProjectCard from "../components/projects/ProjectCard";
@@ -92,7 +92,7 @@ const Homepage = () => {
 
 						{/* Links & CTA */}
 						<div ref={linksRef} className="flex flex-wrap items-center gap-6 pt-8 opacity-0">
-							<Link to="/projects" className="group relative inline-flex items-center justify-center px-8 py-4 font-bold text-white bg-accent overflow-hidden rounded-none border-editorial">
+							<Link to="/projects" className="group relative inline-flex items-center justify-center px-8 py-4 font-bold text-white bg-accent overflow-hidden rounded-none border border-editorial">
 								<span className="relative z-10 transition-transform duration-300 group-hover:-translate-y-1">Selected Works</span>
 								<div className="absolute inset-0 bg-black dark:bg-white transform scale-y-0 origin-bottom transition-transform duration-300 group-hover:scale-y-100"></div>
 								<span className="absolute z-10 transition-transform duration-300 translate-y-12 group-hover:-translate-y-1 text-white dark:text-black">Selected Works</span>
@@ -109,7 +109,7 @@ const Homepage = () => {
 										href={social.link}
 										target="_blank"
 										rel="noreferrer"
-										className="w-14 h-14 flex items-center justify-center border-editorial rounded-full hover:bg-accent hover:text-white transition-colors duration-300 dark:text-white text-black"
+										className="w-14 h-14 flex items-center justify-center border border-editorial rounded-full hover:bg-accent hover:text-white transition-colors duration-300 dark:text-white text-black"
 									>
 										<FontAwesomeIcon icon={social.icon} className="text-xl" />
 									</a>
@@ -121,7 +121,7 @@ const Homepage = () => {
 					{/* Right Col - Structural Image */}
 					<div className="lg:col-span-4 relative flex justify-end">
 						<div className="relative w-full aspect-[3/4] max-w-sm">
-							<div className="absolute inset-0 border-editorial translate-x-4 translate-y-4"></div>
+							<div className="absolute inset-0 border border-editorial translate-x-4 translate-y-4"></div>
 							<img
 								src="/homepage.jpeg"
 								alt={INFO.main.name}
@@ -165,6 +165,27 @@ const Homepage = () => {
 								<li>Designed the requirements and developed for an AI-assisted operations CRM (FastAPI + MongoDB, React 19) — OpenAI-powered task auto-classification, auto-assignment, and insights — and led a team of developers delivering it on GCP Cloud Run + Firebase.</li>
 							</ul>
 						</div>
+
+						<div className="border-l-2 border-accent pl-6 py-2 mt-12">
+							<div className="flex flex-col xl:flex-row xl:justify-between xl:items-start mb-2 gap-2">
+								<div>
+									<h4 className="text-xl font-bold font-serif text-black dark:text-white">
+										Software Associate
+									</h4>
+									<a
+										href="https://abyz.live"
+										target="_blank"
+										rel="noreferrer"
+										className="text-lg font-bold text-gray-800 dark:text-gray-200 hover:text-accent transition-colors"
+									>
+										Abyz
+									</a>
+								</div>
+								<span className="text-sm font-mono tracking-widest uppercase text-gray-500">
+									2024 — Present
+								</span>
+							</div>
+						</div>
 					</div>
 
 					{/* Certifications */}
@@ -174,6 +195,7 @@ const Homepage = () => {
 						</h2>
 						<div className="space-y-6">
 							{[
+								{ title: "GitHub Foundations", org: "Microsoft", date: "jun. 2026 — jun. 2028", id: "35A8CAB5E004E3F4", icon: faGithub },
 								{ title: "Google AI Essentials", org: "Google", date: "jun. 2026", id: "6HHLC2SPRWTU", icon: faGoogle },
 								{ title: "Generative AI Leader Certification", org: "Google", date: "may. 2026", id: "dd28fcf2504948d38c9b7930215c072e", icon: faGoogle },
 								{ title: "Digital Marketing Certified", org: "HubSpot Academy", date: "", id: "7tbw7xg5", icon: faHubspot },

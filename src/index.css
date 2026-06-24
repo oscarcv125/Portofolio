@@ -38,12 +38,12 @@
 }
 
 @layer utilities {
-  /* Editorial borders */
+  /* Editorial borders — sets color only; pair with Tailwind border / border-b / border-l-2 etc */
   .border-editorial {
-    border: 1px solid rgba(0,0,0,0.1);
+    border-color: rgba(0,0,0,0.1);
   }
   .dark .border-editorial {
-    border: 1px solid rgba(255,255,255,0.1);
+    border-color: rgba(255,255,255,0.1);
   }
 
   /* Subtle, sophisticated shadow instead of glow */

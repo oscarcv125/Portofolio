@@ -41,7 +41,7 @@ const About = () => {
 	];
 
 	const achievements = [
-		{ icon: faAward, title: "1st Place", desc: "Swift Challenge Fest 2026 - claRity App" },
+		{ icon: faAward, title: "2nd Place", desc: "Swift Challenge Fest 2026 - claRity App" },
 		{ icon: faAward, title: "1st Place", desc: "Swift Challenge Fest 2025 - HeatShield App" },
 		{ icon: faAward, title: "2nd Place", desc: "Credifiel Datathon - Credit Recovery Optimization" },
 		{ icon: faAward, title: "3rd Place", desc: "Hackathon Iberdrola - Environmental Tech" },
