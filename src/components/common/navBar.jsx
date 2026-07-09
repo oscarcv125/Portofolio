@@ -54,7 +54,7 @@ const NavBar = () => {
           </Link>
 
           {/* Desktop Menu */}
-          <div className="hidden md:flex items-center space-x-12">
+          <div className="hidden md:flex items-center space-x-8 lg:space-x-12 pr-12 md:pr-32 lg:pr-56">
             <ul className="flex items-center space-x-8">
               {navItems.map((item) => (
                 <li key={item.path}>
@@ -78,10 +78,10 @@ const NavBar = () => {
             {/* Theme Toggle */}
             <button
               onClick={toggleTheme}
-              className="text-gray-500 hover:text-accent transition-colors"
+              className="text-gray-500 hover:text-accent transition-colors flex items-center justify-center w-8 h-8"
               aria-label="Toggle theme"
             >
-              <FontAwesomeIcon icon={theme === 'dark' ? faSun : faMoon} />
+              <FontAwesomeIcon icon={theme === 'dark' ? faSun : faMoon} className="text-lg" />
             </button>
           </div>
 

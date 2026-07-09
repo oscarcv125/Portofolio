@@ -121,6 +121,37 @@ function Band({
     dir = new THREE.Vector3();
   const segmentProps = { type: 'dynamic', canSleep: true, colliders: false, angularDamping: 4, linearDamping: 4 };
   const { nodes, materials } = useGLTF(cardGLB);
+
+  const [fabricTexture, setFabricTexture] = useState(null);
+
+    useEffect(() => {
+      const canvas = document.createElement('canvas');
+      canvas.width = 16;
+      canvas.height = 128;
+      const ctx = canvas.getContext('2d');
+      
+      // Fill background
+      ctx.fillStyle = '#e67e22'; 
+      ctx.fillRect(0, 0, 16, 128);
+      
+      // Draw subtle ribs
+      ctx.fillStyle = '#ff9f43'; 
+      for (let i = 0; i < 128; i += 4) {
+        ctx.fillRect(0, i, 16, 2);
+      }
+      
+      // Draw subtle edge lines
+      ctx.fillStyle = '#d35400';
+      ctx.fillRect(0, 0, 2, 128);
+      ctx.fillRect(14, 0, 2, 128);
+
+      const tex = new THREE.CanvasTexture(canvas);
+      tex.wrapS = THREE.RepeatWrapping;
+      tex.wrapT = THREE.RepeatWrapping;
+      tex.repeat.set(1, 10);
+      setFabricTexture(tex);
+    }, []);
+
   const texture = useTexture(lanyardImage || lanyard);
   // useTexture must be called unconditionally; use a blank pixel when an image
   // isn't supplied for a given face, then skip compositing it below.
@@ -270,12 +301,12 @@ function Band({
       <mesh ref={band}>
         <meshLineGeometry />
         <meshLineMaterial
-          color="white"
+          color={fabricTexture ? "white" : "orange"}
           depthTest={true}
           resolution={isMobile ? [1000, 2000] : [1000, 1000]}
-          useMap
-          map={texture}
-          repeat={[-4, 1]}
+          useMap={!!fabricTexture}
+          map={fabricTexture || texture}
+          repeat={[-1, 1]}
           lineWidth={lanyardWidth}
         />
       </mesh>

@@ -70,7 +70,7 @@ const Homepage = () => {
 				<div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
 					
 					{/* Left Col - Massive Typography */}
-					<div className="lg:col-span-8 space-y-8 z-10">
+					<div className="lg:col-span-8 space-y-8 z-50 relative pointer-events-auto">
 						<div className="overflow-visible pl-10 md:pl-14">
 							<h1
 								ref={nameRef}
