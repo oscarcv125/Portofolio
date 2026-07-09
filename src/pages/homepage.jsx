@@ -1,19 +1,56 @@
-import React, { useEffect, useRef } from "react";
+import React, { Suspense, lazy, useEffect, useRef } from "react";
 import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
 import anime from "animejs";
 
-import { faMailBulk, faPhone, faCertificate } from "@fortawesome/free-solid-svg-icons";
+import { faMailBulk } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInstagram, faLinkedin, faGoogle, faHubspot, faGithub } from "@fortawesome/free-brands-svg-icons";
 
 import NavBar from "../components/common/navBar";
 import EchoText from "../components/common/EchoText";
-import Lanyard from "../components/common/Lanyard";
 import ProjectCard from "../components/projects/ProjectCard";
+
+const Lanyard = lazy(() => import("../components/common/Lanyard"));
 
 import INFO from "../data/user";
 import SEO from "../data/seo";
+
+const CertificationCard = ({ cert }) => {
+	const imgRef = useRef(null);
+	return (
+		<div
+			className="flex gap-4 items-start border border-editorial p-4 hover:border-accent transition-colors duration-300 group"
+			onMouseEnter={() => { if (imgRef.current) imgRef.current.style.filter = 'none'; }}
+			onMouseLeave={() => { if (imgRef.current) imgRef.current.style.filter = 'brightness(0)'; }}
+		>
+			<div className="flex items-center justify-center shrink-0 w-8 h-8 text-xl text-black dark:text-white group-hover:text-accent transition-colors">
+				{cert.imgIcon ? (
+					<img
+						ref={imgRef}
+						src={cert.imgIcon}
+						alt={cert.org}
+						className="w-full h-full object-contain transition-all duration-300"
+						style={{ filter: 'brightness(0)' }}
+					/>
+				) : (
+					<FontAwesomeIcon icon={cert.icon} />
+				)}
+			</div>
+			<div>
+				<h4 className="text-base font-bold font-serif text-black dark:text-white leading-snug mb-1">
+					{cert.title}
+				</h4>
+				<p className="text-sm text-gray-600 dark:text-gray-400 font-bold mb-1">
+					{cert.org} {cert.date && <span className="font-light">· {cert.date}</span>}
+				</p>
+				<p className="text-xs font-mono text-gray-400 dark:text-gray-500 uppercase tracking-widest break-all">
+					ID: {cert.id}
+				</p>
+			</div>
+		</div>
+	);
+};
 
 const Homepage = () => {
 	const heroRef = useRef(null);
@@ -128,7 +165,9 @@ const Homepage = () => {
 					{/* Right Col - Interactive Lanyard */}
 					<div className="lg:col-span-4 relative flex justify-end self-start overflow-visible z-40 pointer-events-none">
 						<div className="relative w-full h-[850px] lg:-mt-32 lg:-mr-40 lg:-ml-24 z-40 pointer-events-none">
-							<Lanyard position={[0, 0, 15]} frontImage="/homepage.jpeg" backImage="/homepage.jpeg" imageFit="cover" />
+							<Suspense fallback={null}>
+								<Lanyard position={[0, 0, 15]} frontImage="/homepage.jpeg" backImage="/homepage.jpeg" imageFit="cover" />
+							</Suspense>
 						</div>
 					</div>
 				</div>
@@ -211,42 +250,9 @@ const Homepage = () => {
 								{ title: "Certificate of completion: Introduction to agent skills", org: "Anthropic", date: "abr. 2026", id: "6ivdrpdrib8c", imgIcon: "/logos/anthropic.svg" },
 								{ title: "Claude Code in Action", org: "Anthropic", date: "abr. 2026", id: "ivxs3gasyu3h", imgIcon: "/logos/anthropic.svg" },
 								{ title: "Building with the Claude API", org: "Anthropic", date: "abr. 2026", id: "4xq4i6qh66bu", imgIcon: "/logos/anthropic.svg" },
-							].map((cert, i) => {
-								const imgRef = React.createRef();
-								return (
-								<div
-									key={i}
-									className="flex gap-4 items-start border border-editorial p-4 hover:border-accent transition-colors duration-300 group"
-									onMouseEnter={() => { if (imgRef.current) imgRef.current.style.filter = 'none'; }}
-									onMouseLeave={() => { if (imgRef.current) imgRef.current.style.filter = 'brightness(0)'; }}
-								>
-									<div className="flex items-center justify-center shrink-0 w-8 h-8 text-xl text-black dark:text-white group-hover:text-accent transition-colors">
-										{cert.imgIcon ? (
-											<img
-												ref={imgRef}
-												src={cert.imgIcon}
-												alt={cert.org}
-												className="w-full h-full object-contain transition-all duration-300"
-												style={{ filter: 'brightness(0)' }}
-											/>
-										) : (
-											<FontAwesomeIcon icon={cert.icon} />
-										)}
-									</div>
-									<div>
-										<h4 className="text-base font-bold font-serif text-black dark:text-white leading-snug mb-1">
-											{cert.title}
-										</h4>
-										<p className="text-sm text-gray-600 dark:text-gray-400 font-bold mb-1">
-											{cert.org} {cert.date && <span className="font-light">· {cert.date}</span>}
-										</p>
-										<p className="text-xs font-mono text-gray-400 dark:text-gray-500 uppercase tracking-widest break-all">
-											ID: {cert.id}
-										</p>
-									</div>
-								</div>
-								);
-							})}
+							].map((cert, i) => (
+								<CertificationCard key={i} cert={cert} />
+							))}
 						</div>
 					</div>
 

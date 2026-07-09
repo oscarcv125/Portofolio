@@ -23,3 +23,8 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# scratch / working notes
+IMAGES_NEEDED.txt
+PHOTOS_TO_ADD.txt
+.vite/

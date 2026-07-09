@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { Helmet } from "react-helmet";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLinkedin, faInstagram } from "@fortawesome/free-brands-svg-icons";
-import { faMailBulk, faPhone, faAward, faCode, faBriefcase, faGraduationCap } from "@fortawesome/free-solid-svg-icons";
+import { faMailBulk, faPhone, faAward, faGraduationCap } from "@fortawesome/free-solid-svg-icons";
 import anime from "animejs";
 
 import NavBar from "../components/common/navBar";

@@ -4,17 +4,10 @@ export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
-      colors: {
-        "gradient-start": "#2563eb",
-        "gradient-mid": "#4338ca",
-        "gradient-end": "#6b21a8",
-        "accent-blue": "#2563eb",
-        "accent-indigo": "#4338ca",
-        "accent-purple": "#6b21a8",
-      },
       fontFamily: {
-        mono: ['"JetBrains Mono"', '"Fira Code"', "monospace"],
-        sans: ["Inter", "system-ui", "sans-serif"],
+        serif: ['"Playfair Display"', "serif"],
+        sans: ['"Outfit"', "system-ui", "sans-serif"],
+        display: ['"Rubik Mono One"', "monospace"],
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
