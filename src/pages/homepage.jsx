@@ -207,7 +207,7 @@ const Homepage = () => {
 							<span className="text-accent">3D</span> version.
 						</h2>
 						<p className="text-lg md:text-xl font-light text-gray-300 max-w-xl leading-relaxed mb-10">
-							My portfolio as a fake operating system. Boot into a 3D workstation, click the monitor, drag windows around, run the terminal — every project lives inside a virtual OS.
+							My portfolio as a fake operating system. Boot into a 3D workstation, click the monitor, drag windows around, run the terminal, play games — every project lives inside a virtual OS.
 						</p>
 
 						<div className="flex flex-wrap items-center gap-6">
@@ -217,12 +217,21 @@ const Homepage = () => {
 								rel="noreferrer"
 								className="group relative inline-flex items-center justify-center px-10 py-5 font-bold text-black bg-accent overflow-hidden rounded-none border border-accent shadow-[0_0_30px_rgba(230,126,34,0.35)] transition-shadow duration-300 hover:shadow-[0_0_50px_rgba(230,126,34,0.6)]"
 							>
-								<span className="relative z-10 transition-transform duration-300 group-hover:-translate-y-1 flex items-center gap-3 text-lg tracking-wide">
+								{/* Background wipe on hover */}
+								<span
+									aria-hidden="true"
+									className="absolute inset-0 bg-white transform scale-y-0 origin-bottom transition-transform duration-300 ease-out group-hover:scale-y-100"
+								/>
+								{/* Visible label — slides up and out on hover */}
+								<span className="relative z-10 flex items-center gap-3 text-lg tracking-wide transition-transform duration-300 ease-out group-hover:-translate-y-[130%]">
 									Enter the 3D Portfolio
-									<span className="transition-transform duration-300 group-hover:translate-x-1">↗</span>
+									<span>↗</span>
 								</span>
-								<div className="absolute inset-0 bg-white transform scale-y-0 origin-bottom transition-transform duration-300 group-hover:scale-y-100"></div>
-								<span className="absolute z-10 transition-transform duration-300 translate-y-14 group-hover:-translate-y-1 flex items-center gap-3 text-lg tracking-wide text-black">
+								{/* Hover label — slides up from below into place */}
+								<span
+									aria-hidden="true"
+									className="absolute inset-0 z-10 flex items-center justify-center gap-3 text-lg tracking-wide text-black transform translate-y-[130%] transition-transform duration-300 ease-out group-hover:translate-y-0"
+								>
 									Enter the 3D Portfolio
 									<span>↗</span>
 								</span>
