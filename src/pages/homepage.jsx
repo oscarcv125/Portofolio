@@ -207,7 +207,7 @@ const Homepage = () => {
 							<span className="text-accent">3D</span> version.
 						</h2>
 						<p className="text-lg md:text-xl font-light text-gray-300 max-w-xl leading-relaxed mb-10">
-							My portfolio as a fake operating system. Boot into a 3D workstation, click the monitor, drag windows around, play Doom, launch Spelunky, run the terminal — every project lives inside a virtual OS.
+							My portfolio as a fake operating system. Boot into a 3D workstation, click the monitor, drag windows around, run the terminal — every project lives inside a virtual OS.
 						</p>
 
 						<div className="flex flex-wrap items-center gap-6">
@@ -228,14 +228,6 @@ const Homepage = () => {
 								</span>
 							</a>
 
-							<a
-								href="https://os.oscarcv.tech"
-								target="_blank"
-								rel="noreferrer"
-								className="text-sm font-mono tracking-widest uppercase text-gray-400 hover:text-accent transition-colors border-b border-gray-700 hover:border-accent pb-1"
-							>
-								Skip intro → os.oscarcv.tech
-							</a>
 						</div>
 					</div>
 
@@ -262,13 +254,10 @@ Uptime:   A long time
 Shell:    osh 0.5
 
 $ ls /Applications
-About.app       Contact.app     Doom.app
-Finder.app      Notes.app       Skills.app
-Spelunky.app    Terminal.app    HelpDoku.app
+About.app       Contact.app     Notes.app
+Finder.app      Skills.app      Terminal.app
 Kaapeh.app      Heatshield.app  WUNO.app
-
-$ open Doom.app
-[  OK  ] launching...
+HelpDoku.app    GateGenie.app   Clarity.app
 
 $ █`}
 							</pre>
