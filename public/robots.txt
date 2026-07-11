@@ -1,3 +1,14 @@
 # https://www.robotstxt.org/robotstxt.html
+# Portfolio of Oscar Cardenas — https://oscarcv.tech
+
 User-agent: *
-Disallow:
+Allow: /
+
+# Disallow crawling of build artifacts and asset hashes
+Disallow: /assets/
+Disallow: /404
+
+Sitemap: https://oscarcv.tech/sitemap.xml
+
+# Politeness (most modern crawlers ignore this, but doesn't hurt)
+Crawl-delay: 1
