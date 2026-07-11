@@ -173,6 +173,119 @@ const Homepage = () => {
 				</div>
 			</section>
 
+			{/* Interactive 3D Portfolio CTA */}
+			<section className="relative py-24 md:py-32 px-8 md:px-12 bg-black text-white overflow-hidden border-y border-editorial">
+				{/* Ambient background grid */}
+				<div
+					aria-hidden="true"
+					className="absolute inset-0 opacity-[0.06] pointer-events-none"
+					style={{
+						backgroundImage:
+							"linear-gradient(rgba(230,126,34,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(230,126,34,0.5) 1px, transparent 1px)",
+						backgroundSize: "48px 48px",
+					}}
+				/>
+				{/* Amber glow */}
+				<div
+					aria-hidden="true"
+					className="absolute -top-1/2 left-1/2 -translate-x-1/2 w-[80vw] h-[80vw] pointer-events-none"
+					style={{
+						background:
+							"radial-gradient(circle, rgba(230,126,34,0.18) 0%, rgba(230,126,34,0) 60%)",
+					}}
+				/>
+
+				<div className="relative max-w-7xl mx-auto grid lg:grid-cols-12 gap-12 items-center">
+					{/* Left: pitch + CTA */}
+					<div className="lg:col-span-7">
+						<p className="text-xs font-mono tracking-[0.35em] uppercase text-accent mb-6">
+							// EXPERIENCE.exe · new
+						</p>
+						<h2 className="text-5xl md:text-7xl font-bold font-serif mb-8 leading-[0.95]">
+							Or <span className="italic text-accent">explore</span> the
+							<br />
+							<span className="text-accent">3D</span> version.
+						</h2>
+						<p className="text-lg md:text-xl font-light text-gray-300 max-w-xl leading-relaxed mb-10">
+							My portfolio as a fake operating system. Boot into a 3D workstation, click the monitor, drag windows around, play Doom, launch Spelunky, run the terminal — every project lives inside a virtual OS.
+						</p>
+
+						<div className="flex flex-wrap items-center gap-6">
+							<a
+								href="https://computer.oscarcv.tech"
+								target="_blank"
+								rel="noreferrer"
+								className="group relative inline-flex items-center justify-center px-10 py-5 font-bold text-black bg-accent overflow-hidden rounded-none border border-accent shadow-[0_0_30px_rgba(230,126,34,0.35)] transition-shadow duration-300 hover:shadow-[0_0_50px_rgba(230,126,34,0.6)]"
+							>
+								<span className="relative z-10 transition-transform duration-300 group-hover:-translate-y-1 flex items-center gap-3 text-lg tracking-wide">
+									Enter the 3D Portfolio
+									<span className="transition-transform duration-300 group-hover:translate-x-1">↗</span>
+								</span>
+								<div className="absolute inset-0 bg-white transform scale-y-0 origin-bottom transition-transform duration-300 group-hover:scale-y-100"></div>
+								<span className="absolute z-10 transition-transform duration-300 translate-y-14 group-hover:-translate-y-1 flex items-center gap-3 text-lg tracking-wide text-black">
+									Enter the 3D Portfolio
+									<span>↗</span>
+								</span>
+							</a>
+
+							<a
+								href="https://os.oscarcv.tech"
+								target="_blank"
+								rel="noreferrer"
+								className="text-sm font-mono tracking-widest uppercase text-gray-400 hover:text-accent transition-colors border-b border-gray-700 hover:border-accent pb-1"
+							>
+								Skip intro → os.oscarcv.tech
+							</a>
+						</div>
+					</div>
+
+					{/* Right: terminal mock */}
+					<div className="lg:col-span-5">
+						<div className="relative bg-[#0a0603] border border-accent/40 shadow-[0_20px_60px_rgba(0,0,0,0.6),0_0_40px_rgba(230,126,34,0.12)]">
+							{/* Fake title bar */}
+							<div className="flex items-center gap-2 px-3 py-2 border-b border-accent/30 bg-black/40">
+								<span className="w-2.5 h-2.5 rounded-full bg-red-500"></span>
+								<span className="w-2.5 h-2.5 rounded-full bg-yellow-500"></span>
+								<span className="w-2.5 h-2.5 rounded-full bg-green-500"></span>
+								<span className="ml-3 text-xs font-mono text-accent/70 tracking-widest">
+									oscar@oscar-os — osh — 80×24
+								</span>
+							</div>
+							<pre className="p-5 md:p-6 text-[11px] md:text-[13px] leading-[1.55] font-mono text-accent overflow-hidden select-none whitespace-pre">
+{`$ neofetch
+oscar@oscar-os
+===============
+OS:       oscar-os 1.0.0
+Host:     oscar-system 10.0
+Kernel:   1.0.0
+Uptime:   A long time
+Shell:    osh 0.5
+
+$ ls /Applications
+About.app       Contact.app     Doom.app
+Finder.app      Notes.app       Skills.app
+Spelunky.app    Terminal.app    HelpDoku.app
+Kaapeh.app      Heatshield.app  WUNO.app
+
+$ open Doom.app
+[  OK  ] launching...
+
+$ █`}
+							</pre>
+							{/* CRT scanlines */}
+							<div
+								aria-hidden="true"
+								className="absolute inset-0 pointer-events-none"
+								style={{
+									background:
+										"repeating-linear-gradient(0deg, rgba(0,0,0,0) 0px, rgba(0,0,0,0) 2px, rgba(0,0,0,0.18) 3px, rgba(0,0,0,0.18) 4px)",
+								}}
+							/>
+						</div>
+					</div>
+				</div>
+			</section>
+
 			{/* Experience & Certifications */}
 			<section className="relative py-32 px-8 md:px-12 border-t border-editorial">
 				<div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16">
