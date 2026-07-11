@@ -215,26 +215,20 @@ const Homepage = () => {
 								href="https://computer.oscarcv.tech"
 								target="_blank"
 								rel="noreferrer"
-								className="group relative inline-flex items-center justify-center px-10 py-5 font-bold text-black bg-accent overflow-hidden rounded-none border border-accent shadow-[0_0_30px_rgba(230,126,34,0.35)] transition-shadow duration-300 hover:shadow-[0_0_50px_rgba(230,126,34,0.6)]"
+								className="group relative inline-flex items-center gap-3 px-10 py-5 font-bold text-black bg-accent overflow-hidden rounded-none border border-accent text-lg tracking-wide shadow-[0_0_30px_rgba(230,126,34,0.35)] transition-shadow duration-300 hover:shadow-[0_0_50px_rgba(230,126,34,0.6)]"
 							>
-								{/* Background wipe on hover */}
+								{/* White curtain wiping up from the bottom on hover */}
 								<span
 									aria-hidden="true"
-									className="absolute inset-0 bg-white transform scale-y-0 origin-bottom transition-transform duration-300 ease-out group-hover:scale-y-100"
+									className="absolute inset-0 bg-white origin-bottom scale-y-0 transition-transform duration-300 ease-out group-hover:scale-y-100"
 								/>
-								{/* Visible label — slides up and out on hover */}
-								<span className="relative z-10 flex items-center gap-3 text-lg tracking-wide transition-transform duration-300 ease-out group-hover:-translate-y-[130%]">
-									Enter the 3D Portfolio
-									<span>↗</span>
-								</span>
-								{/* Hover label — slides up from below into place */}
+								{/* Diagonal shine sweeping across on hover */}
 								<span
 									aria-hidden="true"
-									className="absolute inset-0 z-10 flex items-center justify-center gap-3 text-lg tracking-wide text-black transform translate-y-[130%] transition-transform duration-300 ease-out group-hover:translate-y-0"
-								>
-									Enter the 3D Portfolio
-									<span>↗</span>
-								</span>
+									className="pointer-events-none absolute inset-0 -translate-x-full transition-transform duration-700 ease-out group-hover:translate-x-full bg-gradient-to-r from-transparent via-white/50 to-transparent"
+								/>
+								<span className="relative z-10">Enter the 3D Portfolio</span>
+								<span className="relative z-10 transition-transform duration-300 group-hover:translate-x-1">↗</span>
 							</a>
 
 						</div>
