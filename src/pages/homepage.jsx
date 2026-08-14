@@ -44,9 +44,7 @@ const CertificationCard = ({ cert }) => {
 				<p className="text-sm text-gray-600 dark:text-gray-400 font-bold mb-1">
 					{cert.org} {cert.date && <span className="font-light">· {cert.date}</span>}
 				</p>
-				<p className="text-xs font-mono text-gray-400 dark:text-gray-500 uppercase tracking-widest break-all">
-					ID: {cert.id}
-				</p>
+				{cert.id && (<p className="text-xs font-mono text-gray-400 dark:text-gray-500 uppercase tracking-widest break-all">ID: {cert.id}</p>)}
 			</div>
 		</div>
 	);
@@ -291,6 +289,32 @@ $ █`}
 							<div className="flex flex-col xl:flex-row xl:justify-between xl:items-start mb-2 gap-2">
 								<div>
 									<h4 className="text-xl font-bold font-serif text-black dark:text-white">
+										Mobile Developer & AI Integrations Engineer
+									</h4>
+									<p className="text-lg font-bold text-gray-800 dark:text-gray-200">
+										Zazpay
+									</p>
+								</div>
+								<span className="text-sm font-mono tracking-widest uppercase text-gray-500">
+									Jun 2026 — Present
+								</span>
+							</div>
+							<p className="text-sm font-mono tracking-widest uppercase text-accent mb-4">
+								Full-time · Fintech
+							</p>
+							<p className="text-base text-gray-600 dark:text-gray-400 mb-4 leading-relaxed">
+								Payments/fintech company — main developer of the on-field promoters mobile app and creator of an internal AI agent-orchestration platform.
+							</p>
+							<ul className="list-disc list-inside text-sm text-gray-600 dark:text-gray-400 leading-relaxed space-y-2">
+								<li>Main developer of a production React Native + Expo app (TypeScript, Clean Architecture) with background-GPS geofencing check-ins, biometric login, offline support, and real-time sync (socket.io); 88 Jest tests.</li>
+								<li>Built, solo, an internal AI agent-orchestration platform running Claude coding agents in sandboxed Docker containers across ~45 repos — Express/SQLite backend, a job queue with a dependency DAG, auto-PRs via the GitHub API, SSE observability, AES-256-GCM session auth, and a Next.js UI; deployed on Ubuntu/MicroK8s.</li>
+							</ul>
+						</div>
+
+						<div className="border-l-2 border-accent pl-6 py-2 mt-12">
+							<div className="flex flex-col xl:flex-row xl:justify-between xl:items-start mb-2 gap-2">
+								<div>
+									<h4 className="text-xl font-bold font-serif text-black dark:text-white">
 										Software Engineer / DevOps
 									</h4>
 									<p className="text-lg font-bold text-gray-800 dark:text-gray-200">
@@ -347,6 +371,7 @@ $ █`}
 						</h2>
 						<div className="space-y-6">
 							{[
+								{ title: "Claude Certified Architect: Foundations", org: "Anthropic", date: "jul. 2026 — jul. 2027", id: "", imgIcon: "/logos/anthropic.svg" },
 								{ title: "GitHub Foundations", org: "Microsoft", date: "jun. 2026 — jun. 2028", id: "35A8CAB5E004E3F4", icon: faGithub },
 								{ title: "Google AI Essentials", org: "Google", date: "jun. 2026", id: "6HHLC2SPRWTU", icon: faGoogle },
 								{ title: "Generative AI Leader Certification", org: "Google", date: "may. 2026", id: "dd28fcf2504948d38c9b7930215c072e", icon: faGoogle },
